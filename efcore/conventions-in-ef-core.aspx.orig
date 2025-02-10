@@ -1,0 +1,885 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Entity Framework Core Conventions
+</title><link href="../App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="../App_Themes/css/eftstyle.min.css?v=1.9" rel="stylesheet" type="text/css" />
+    
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <meta id="ctl00_head_metaKeyword" name="keywords" content="conventions,default conventions in ef core, schema convention,table convention, foreignkey convention,primarykey convention,column convention, data type convention,ef core, conventions in entity framework core, what are conventions in ef core, how to, entity framework,Entity Framework core tutorial,efcore Tutorial,ef, ef core, entity framework"></meta>
+    <meta name="description" content="Learn about the default conventions available in Entity Framework Core. Conventions for table, schema, columns, data type, foreign key, primary key etc. in EF Core." />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.entityframeworktutorial.net/efcore/conventions-in-ef-core.aspx"},"headline":"Conventions in Entity Framework Core","author":{"@type":"Person","name":"Ravi Karia","sameAs":["https://www.entityframeworktutorial.net/aboutme.aspx","https://www.linkedin.com/in/ravikaria"]},"dateModified":"2022-03-21T05:40:45.5968423Z","description":"Learn about the default conventions available in Entity Framework Core. Conventions for table, schema, columns, data type, foreign key, primary key etc. in EF Core."}</script>
+    <link rel="canonical" href="https://www.entityframeworktutorial.net/efcore/conventions-in-ef-core.aspx" />
+
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-33844821-1');
+    </script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="http://www.entityframeworktutorial.net">
+            <img src="../images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="/what-is-entityframework.aspx">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/code-first/what-is-code-first.aspx">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/faq.aspx">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-cheat-sheet.aspx">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="/entity-framework-cheat-sheet.aspx">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        
+        <nav class="navbar menuLeft p-0 navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbarLeft">
+                <div class="menuVerticalParent">
+                    <ul class="menuVertical" id="leftmenu">
+                        <li><a href="/efcore/entity-framework-core.aspx">EF Core - Introduction</a></li>
+                        <li><a href="/efcore/install-entity-framework-core.aspx">EF Core - Installation</a></li>
+                        <li><a href="/efcore/create-entities.aspx">EF Core - Create Entities</a></li>
+                        <li><a href="/efcore/entity-framework-core-dbcontext.aspx">EF Core - Create DbContext</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/working-with-dbcontext.aspx">Working with DbContext</a></li>
+                                <li><a href="/efcore/changetracker-in-ef-core.aspx">Track Changes of Entities</a></li>
+                                <li><a href="/efcore/db-connection-strings.aspx">DB Connection Strings</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/efcore/entity-framework-core-migration.aspx">EF Core - Migrations</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/generate-sql-script.aspx">Generate SQL Script</a></li>
+                                <li><a href="/efcore/pmc-commands-for-ef-core-migration.aspx">PMC/PowerShell Commands</a></li>
+                                <li><a href="/efcore/cli-commands-for-ef-core-migration.aspx">.NET Core CLI Commands</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/efcore/saving-data-in-connected-scenario-in-ef-core.aspx">EF Core - Saving Data</a></li>
+                        <li><a href="/efcore/querying-in-ef-core.aspx">EF Core - Querying</a></li>
+                        <li><a href="/efcore/saving-data-in-disconnected-scenario-in-ef-core.aspx">Disconnected Scenario: Insert Data</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/update-data-in-entity-framework-core.aspx">Update Data</a></li>
+                                <li><a href="/efcore/delete-data-in-entity-framework-core.aspx">Delete Data</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li><a href="/efcore/conventions-in-ef-core.aspx">EF Core - Conventions</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/one-to-many-conventions-entity-framework-core.aspx">One-to-Many Conventions</a></li>
+                                <li><a href="/efcore/one-to-one-conventions-entity-framework-core.aspx">One-to-One Conventions</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/efcore/configuration-in-entity-framework-core.aspx">EF Core - Configurations</a></li>
+                        <li><a href="/efcore/fluent-api-in-entity-framework-core.aspx">EF Core - Fluent API</a>
+
+                        </li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/configure-one-to-many-relationship-using-fluent-api-in-ef-core.aspx">Configure One-to-Many Relationship</a></li>
+                                <li><a href="/efcore/configure-one-to-one-relationship-using-fluent-api-in-ef-core.aspx">Configure One-to-One Relationship</a></li>
+                                <li><a href="/efcore/configure-many-to-many-relationship-in-ef-core.aspx">Configure Many-to-Many Relationship</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li><a href="/efcore/shadow-property.aspx">Shadow Property</a></li>
+                        <li><a href="/efcore/working-with-disconnected-entity-graph-ef-core.aspx">Working with Disconnected Entity Graph</a></li>
+                        <li><a href="/efcore/changetracker-trackgraph-ef-core.aspx">Tracking Entity Graph</a></li>
+                        <li><a href="/efcore/raw-sql-queries-in-ef-core.aspx">Raw SQL Queries</a></li>
+                        <li><a href="/efcore/working-with-stored-procedure-in-ef-core.aspx">Working with Stored Procedure</a></li>
+                        <li><a href="/efcore/logging-in-entityframework-core.aspx">Logging</a></li>
+
+                        <li><a href="/efcore/create-model-for-existing-database-in-ef-core.aspx">EF Core - Existing Database</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="middleContent" id="middleContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pr-md-0 col-lg-12 col-xl-8">
+                        
+<div class="lb-ad mt-1">
+    
+    <a href="https://entityframework-extensions.net?z=eft" target="_blank" rel="nofollow" >
+        <img src="/images/ef-ext-lb.jpg" class="eftext-img" /></a>
+</div>
+
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious_lnkPrev1" class="btn  rounded-0" href="/efcore/delete-data-in-entity-framework-core.aspx"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious_lnkNext1" class="btn rounded-0" href="/efcore/one-to-many-conventions-entity-framework-core.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                        
+    <h1>Conventions in Entity Framework Core</h1>
+
+    <p>
+        Conventions are default rules using which Entity Framework builds a model based on your domain (entity) classes. 
+        In the <a href="/efcore/entity-framework-core-console-application.aspx" target="_blank">First EF Core Application</a> chapter, EF Core API creates a database schema based on domain and context classes, without any additional configurations because domain classes were following the conventions.
+    </p>
+    <p>Consider the following sample entities and context class to understand the default conventions.</p>
+    <pre class="csharpcode">
+<span class="kwrd">public</span> <span class="kwrd">class</span> Student
+{
+    <span class="kwrd">public</span> <span class="kwrd">int</span> StudentId { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">string</span> FirstName { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">string</span> LastName { get; set; }
+    <span class="kwrd">public</span> <span class="userclass">DateTime</span> DateOfBirth { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">byte</span>[] Photo { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">decimal</span> Height { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">float</span> Weight { get; set; }
+
+    <span class="kwrd">public</span> <span class="kwrd">int</span> GradeId { get; set; }
+    <span class="kwrd">public</span> <span class="userclass">Grade</span> Grade { get; set; }
+}
+
+<span class="kwrd">public</span> <span class="kwrd">class</span> Grade
+{
+    <span class="kwrd">public</span> <span class="kwrd">int</span> Id { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">string</span> GradeName { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">string</span> Section { get; set; }
+
+    <span class="kwrd">public</span> <span class="userclass">IList</span>&lt;Student&gt; Students { get; set; }
+}
+
+<span class="kwrd">public</span> <span class="kwrd">class</span> <span class="userclass">SchoolContext</span> : <span class="userclass">DbContext</span>
+{
+    <span class="kwrd">protected</span> <span class="kwrd">override</span> <span class="kwrd">void</span> OnConfiguring(<span class="userclass">DbContextOptionsBuilder</span> optionsBuilder)
+    { 
+        optionsBuilder.UseSqlServer(<span class="str">@"Server=.\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;"</span>);
+    }
+
+    <span class="kwrd">public</span> <span class="userclass">DbSet</span>&lt;<span class="userclass">Student</span>&gt; Students { get; set; }
+}
+</pre>
+
+    <p>Let's understand the EF Core conventions and how EF Core API will create a database for the above entities. </p>
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+   
+    <h2 id="ef-core-convention-for-schema">Schema</h2>
+    <p>EF Core will create all the database objects in the <b>dbo</b> schema by default. </p>
+
+    <figure class="thumbnail center-block">
+        <a href="/images/efcore/schema-conv.png" target="_blank">
+            <img alt="" src="/images/efcore/schema-conv.png" /></a>
+    </figure>
+    <h2 id="ef-core-convention-for-table">Table</h2>
+    <p>
+        EF Core will create database tables for all <code>DbSet&lt;TEntity&gt;</code> properties in a context class with the same name as the property.
+       It will also create tables for entities which are not included as <code>DbSet</code> properties but are reachable through reference properties in other <code>DbSet</code> entities.
+        For the above example, EF Core will create the <code>Students</code> table for <code>DbSet&lt;Student&gt;</code> property in the <code>SchoolContext</code> class and the <code>Grade</code> table for a <code>Grade</code> property in the <code>Student</code> entity class, even though the <code>SchoolContext</code> class does not include the <code>DbSet&lt;Grade&gt;</code> property.
+    </p>
+    <figure class="thumbnail center-block">
+        <a href="/images/efcore/table-conv.png" target="_blank">
+            <img alt="" src="/images/efcore/table-conv.png" /></a>
+    </figure>
+
+    <h2 id="ef-core-convention-for-column">Column</h2>
+    <p>
+        EF Core will create columns for all the scalar properties of an entity class with the same name as the property, by default.
+        It uses the reference and collection properties in building relationships among corresponding tables in the database.
+    </p>
+    <figure class="thumbnail center-block">
+        <a href="/images/efcore/column-conv2.png" target="_blank">
+            <img alt="" src="/images/efcore/column-conv2.png" /></a>
+    </figure>
+    <h2 id="ef-core-convention-for-column-datatype">Column Data Type</h2>
+    <p>
+        The data type for columns in the database table is depending on how the provider for the database has mapped C# data type to the data type of a selected database. 
+         The following table lists mapping between C# data type to SQL Server column data type.
+    </p>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th class="col-xs-4">C# Data Type</th>
+                <th class="col-xs-8">Mapping to SQL Server Data Type</th>
+            </tr>
+            <tr>
+                <td>int</td>
+                <td>int
+                </td>
+            </tr>
+            <tr>
+                <td>string 
+                </td>
+                <td>nvarchar(Max)
+                </td>
+            </tr>
+            <tr>
+                <td>decimal
+                </td>
+                <td>decimal(18,2)
+                </td>
+            </tr>
+            <tr>
+                <td>float 
+                </td>
+                <td>real
+                </td>
+            </tr>
+            <tr>
+                <td>byte[] 
+                </td>
+                <td>varbinary(Max)
+                </td>
+            </tr>
+            <tr>
+                <td>datetime
+                </td>
+                <td>datetime
+                </td>
+            </tr>
+            <tr>
+                <td>bool
+                </td>
+                <td>bit
+                </td>
+            </tr>
+            <tr>
+                <td>byte
+                </td>
+                <td>tinyint
+                </td>
+            </tr>
+            <tr>
+                <td>short
+                </td>
+                <td>smallint
+                </td>
+            </tr>
+            <tr>
+                <td>long
+                </td>
+                <td>bigint
+                </td>
+            </tr>
+            <tr>
+                <td>double 
+                </td>
+                <td>float
+                </td>
+            </tr>
+            <tr>
+                <td>char</td>
+                <td>No mapping
+                </td>
+            </tr>
+            <tr>
+                <td>sbyte
+                </td>
+                <td>No mapping
+                    (throws exception)
+                </td>
+            </tr>
+            <tr>
+                <td>object
+                </td>
+                <td>No mapping
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+
+    <h2 id="ef-core-convention-for-nullable-column">Nullable Column</h2>
+    <p>EF Core creates null columns for all reference data type and nullable primitive type properties e.g. string, Nullable&lt;int&gt;, decimal?.</p>
+    <h2 id="ef-core-convention-for-notnull-column">NotNull Column</h2>
+    <p>EF Core creates NotNull columns in the database for all primary key properties, and primitive type properties e.g. int, float, decimal, DateTime etc..</p>
+
+    <h2 id="ef-core-convention-for-primarykey">Primary Key</h2>
+    <p>
+        EF Core will create the primary key column for the property named <code>Id</code> or <code>&lt;Entity Class Name&gt;Id</code> (case insensitive).
+        For example, EF Core will create a column as PrimaryKey in the <code>Students</code> table if the <code>Student</code> class includes a property named id, ID, iD, Id, studentid, StudentId, STUDENTID, or sTUdentID.
+    </p>
+
+    <figure class="thumbnail center-block">
+        <a href="/images/efcore/pk-conv.png" target="_blank">
+            <img alt="" src="/images/efcore/pk-conv.png" /></a>
+    </figure>
+
+    <h2 id="ef-core-convention-for-foreignkey">Foreign Key</h2>
+    <p>
+        As per the foreign key convention, EF Core API will create a foreign key column for each reference navigation property in an entity with one of the following naming patterns.
+    </p>
+    <ul class="list">
+        <li><code>&lt;Reference Navigation Property Name&gt;Id</code></li>
+        <li><code>&lt;Reference Navigation Property Name&gt;&lt;Principal Primary Key Property Name&gt;</code></li>
+    </ul>
+    <p>In our example (<code>Student</code> and <code>Grade</code> entities), EF Core will create a foreign key column <code>GradeId</code> in the <code>Students</code> table, as depicted in the following figure.</p>
+    <figure class="thumbnail center-block">
+        <a href="/images/efcore/foreignkey-conv.png" target="_blank">
+            <img alt="" src="/images/efcore/foreignkey-conv.png" /></a>
+    </figure>
+    <p>The following table lists foreign key column names for different reference property names and primary key property names.</p>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Reference Property Name in Dependent Entity
+                    </th>
+                    <th>Foreign Key Property Name in Dependent Entity
+                    </th>
+                    <th>Principal Primary Key Property Name
+                    </th>
+                    <th>Foreign Key Column Name in DB
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Grade 
+                    </td>
+                    <td>GradeId
+                    </td>
+                    <td>GradeId
+                    </td>
+                    <td>GradeId
+                    </td>
+                </tr>
+                <tr>
+                    <td>Grade 
+                    </td>
+                    <td>-
+                    </td>
+                    <td>GradeId
+                    </td>
+                    <td>GradeId
+                    </td>
+                </tr>
+                <tr>
+                    <td>Grade 
+                    </td>
+                    <td>-
+                    </td>
+                    <td>Id
+                    </td>
+                    <td>GradeId
+                    </td>
+                </tr>
+                <tr>
+                    <td>CurrentGrade 
+                    </td>
+                    <td>CurrentGradeId
+                    </td>
+                    <td>GradeId
+                    </td>
+                    <td>CurrentGradeId
+                    </td>
+                </tr>
+                <tr>
+                    <td>CurrentGrade 
+                    </td>
+                    <td>-
+                    </td>
+                    <td>GradeId
+                    </td>
+                    <td>CurrentGradeGradeId
+                    </td>
+                </tr>
+                <tr>
+                    <td>CurrentGrade 
+                    </td>
+                    <td>-
+                    </td>
+                    <td>Id
+                    </td>
+                    <td>CurrentGradeId
+                    </td>
+                </tr>
+                <tr>
+                    <td>CurrentGrade 
+                    </td>
+                    <td>GradeId
+                    </td>
+                    <td>Id
+                    </td>
+                    <td>GradeId
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <h2 id="ef-core-convention-for-index">Index</h2>
+    <p>EF Core creates a clustered index on Primarykey columns and a non-clustered index on ForeignKey columns, by default.</p>
+
+    <p>
+        Learn about relationship conventions in the next chapter.
+    </p>
+
+
+
+                        
+<div class="row">
+    <hr />
+    
+    
+    <div class="col-xl-12 text-center">
+       <div id="124859-19"><script src="//ads.themoneytizer.com/s/gen.js?type=19"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=19"></script></div>
+    </div>
+
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious1_lnkPrev1" class="btn  rounded-0" href="/efcore/delete-data-in-entity-framework-core.aspx"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious1_lnkNext1" class="btn rounded-0" href="/efcore/one-to-many-conventions-entity-framework-core.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    
+                    
+<div class=" d-none d-xl-block col-xl-4 rightSidebar">
+    <div class="row">
+        <div class="col-12">
+            <div class="popular-articles col-12">
+                <ul class="list-group article-items one">
+                    
+                    <li class="list-group-item intro"><a href="https://entityframework-extensions.net/fastest-way-to-insert?z=eft-tl" onclick="_gaq.push(['_trackEvent', 'ef_ext_tl', 'click', 'LINK CLICK', 1, true]);" target="_blank" rel="nofollow  noreferrer" title="Improve EF performance using Entity Framework Extension">Fastest Way to Insert using EF Extensions</a></li>
+                    <li class="list-group-item intro"><a href="https://www.tutorialsteacher.com" target="_blank" title="C#, ASP.NET MVC, LINQ, TypeScript, Node.js, TypeScirpt">Learn C#, MVC, ASP.NET Core, LINQ</a></li>
+
+                </ul>
+            </div>
+
+            
+            <div class="mt-3 ml-2">
+                <div id="124859-2">
+                    <script src="//ads.themoneytizer.com/s/gen.js?type=2"></script>
+                    <script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=2"></script>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div class="mt-3 ml-2" id="stickyAdDiv">
+                <div id="124859-3"><script src="//ads.themoneytizer.com/s/gen.js?type=3"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=3"></script></div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+                </div>
+            </div>
+            
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="/privacy-policy.aspx" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="/cdn-cgi/l/email-protection#284e4d4d4c4a494b43684d465c415c514e5a49454d5f475a435c5d5c475a41494406464d5c"><span class="__cf_email__" data-cfemail="d5b3b0b0b1b7b4b6be95b0bba1bca1acb3a7b4b8b0a2baa7bea1a0a1baa7bcb4b9fbbbb0a1">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/what-is-entityframework.aspx">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="//entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="/aboutme.aspx">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="/privacy-policy.aspx">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="/terms-of-use.aspx">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="//ads.themoneytizer.com/s/gen.js?type=6"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=6"></script></div>
+
+        </section>
+    </div>
+    <script src="/scripts/jquery.min.js"></script>
+    
+    <script src="/scripts/popper.1.12.9.min.js"></script>
+    <script src="/App_Themes/bs/bootstrap.min.js"></script>
+    <script src="/scripts/eftGeneralScript.min.js?v=1.3"></script>
+    <script type="text/javascript" src="//cdn.pubguru.com/fb.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            stickyAd();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+                stickyAd();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            var path = $(location).attr('pathname');
+            $('#leftmenu li a[href="' + path + '"]').addClass('active');
+            $('#topMenu ul li a[href="/efcore/entity-framework-core.aspx"]').addClass('active');
+
+            maintainLeftMenuPos();
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+</body>
+</html>

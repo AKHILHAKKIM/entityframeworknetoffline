@@ -1,0 +1,733 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Methods to attach disconnected entities in Entity Framework 6
+</title><link href="../App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="http://www.entityframeworktutorial.net/App_Themes/css/eftstyle.min.css?v=1.9" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <meta id="ctl00_head_metaKeyword" name="keywords" content="attach,add,attach,entry, attach entitygraph, attach entity graph, attach disconnected entity graph,attach entity graph in entity framework 5.0,Entity Framework 5 tutorial,Entity Framework Tutorial, entity framework, entityframework 5.0"></meta>
+    <meta name="description" content="Learn about various methods to attach disconnected entity graph to DbContext in Entity Framework 6.x." /><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.entityframeworktutorial.net/entityframework6/attach-disconnected-entity-graph.aspx"
+  },
+  "headline": "Methods to Attach Disconnected Entities in EF 6",
+  "author": {
+    "@type": "Person",
+    "name": "Ravi Karia",
+    "sameAs": [
+      "https://www.entityframeworktutorial.net/aboutme.aspx",
+      "https://www.linkedin.com/in/ravikaria"
+    ]
+  },
+  "dateModified": "2023-11-07T07:15:21.7978570Z",
+  "description": "Learn about various methods to attach disconnected entity graph to DbContext in Entity Framework 6.x."
+}
+</script>
+    <link rel="canonical" href="https://www.entityframeworktutorial.net/entityframework6/attach-disconnected-entity-graph.aspx" />
+
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-33844821-1');
+    </script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="../index.html">
+            <img src="../images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="../what-is-entityframework.aspx.html">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../efcore/entity-framework-core.aspx.html">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="introduction.aspx.html">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../code-first/what-is-code-first.aspx.html">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="../faq.aspx.html">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../entity-framework-quiz.aspx.html">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../entity-framework-cheat-sheet.aspx.html">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="../efcore/entity-framework-core.aspx.html">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="../code-first/what-is-code-first.aspx.html">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="introduction.aspx.html">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="../entity-framework-quiz.aspx.html">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="http://www.entityframeworktutorial.net/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="../entity-framework-cheat-sheet.aspx.html">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar menuLeft p-0 navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbarLeft">
+                <div class="menuVerticalParent">
+                    <ul class="menuVertical" id="leftmenu">
+                        <li><a href="introduction.aspx.html">Introduction</a></li>
+                        <li><a href="create-entity-data-model.aspx.html">Create Entity Data Model</a></li>
+                        <li><a href="model-browser-in-entity-framework.aspx.html">Model Browser</a></li>
+                        <li><a href="dbcontext.aspx.html">DbContext Class</a></li>
+                        <li><a href="dbset.aspx.html">DbSet Entities</a></li>
+                        <li><a href="add-update-delete-data-in-entityframework.aspx.html">Add/Update/Delete Data</a></li>
+                        <li><a href="querying-with-entityframework.aspx.html">Querying</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="../querying-entity-graph-in-entity-framework.aspx.html">LINQ-to-Entities Queries</a></li>
+                                <li><a href="eager-loading-in-entity-framework.aspx.html">Eager Loading</a></li>
+                                <li><a href="lazyloading-in-entity-framework.aspx.html">Lazy Loading</a></li>
+                                <li><a href="../EntityFramework4.3/explicit-loading-with-dbcontext.aspx.html">Explicit Loading</a></li>
+                                <li><a href="../EntityFramework4.3/raw-sql-query-in-entity-framework.aspx.html">Raw SQL Query</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../entity-relationships.aspx.html">Entity Relationships</a></li>
+                        <li><a href="attach-disconnected-entity-graph.aspx.html">Attach Disconnected Entities</a></li>
+                        <li><a href="save-disconnected-entity-in-entity-framework.aspx.html">Save Disconnected Entity</a></li>
+                        <li><a href="save-entity-graph.aspx.html">Save Disconnected Entity Graph</a></li>
+                        <li><a href="delete-disconnected-entity-in-entity-framework.aspx.html">Delete Disconnected Entity</a></li>
+                        <li><a href="async-query-and-save.aspx.html">Async Query and Save</a></li>
+                        <li><a href="addrange-removerange.aspx.html">Add\Remove Multiple Entities</a></li>
+                        <li><a href="handle-concurrency-in-entity-framework.aspx.html">Handle Concurrency</a></li>
+                        <li><a href="stored-procedure-in-entity-framework.aspx.html">Stored Procedure in EF</a></li>
+                        <li><a href="crud-using-stored-procedures.aspx.html">CUD using Stored Procedure</a></li>
+                        <li><a href="dbentityentry.aspx.html">DbEntityEntry Class</a></li>
+                        <li><a href="change-tracking-in-entity-framework.aspx.html">Change Tracking of Entities</a></li>
+                        <li><a href="enum-in-entity-framework.aspx.html">Enum </a></li>
+                        <li><a href="spatial-datatype-in-entity-framework.aspx.html">Spatial Data Type</a></li>
+                        <li><a href="view-in-entity-framework.aspx.html">DB Views in EF</a></li>
+                        <li><a href="table-valued-function-in-entity-framework.aspx.html">Table-valued Function</a></li>
+
+                        <li><a href="validate-entity-in-entity-framework.aspx.html">Validate Entity</a></li>
+
+                        <li><a href="code-based-configuration.aspx.html">Code-based configuration</a></li>
+                        <li><a href="database-command-logging.aspx.html">Db Command Logging</a></li>
+                        <li><a href="database-command-interception.aspx.html">Command Interception</a></li>
+                        <li><a href="transaction-in-entity-framework.aspx.html">Transaction support</a></li>
+                        <li><a href="multiple-diagrams-in-entity-framework.aspx.html">Multiple Diagrams</a></li>
+                        <li><a href="colored-entity-in-entity-framework.aspx.html">Colored Entities in Designer</a></li>
+                        <li><a href="model-first-with-entity-framework.aspx.html">Model-First Approach</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="middleContent" id="middleContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pr-md-0 col-lg-12 col-xl-8">
+                        
+<div class="lb-ad mt-1">
+    
+    <a href="https://entityframework-extensions.net?z=eft" target="_blank" rel="nofollow" >
+        <img src="http://www.entityframeworktutorial.net/images/ef-ext-lb.jpg" class="eftext-img" /></a>
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious_lnkPrev1" class="btn  rounded-0" href="../entity-relationships.aspx.html"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious_lnkNext1" class="btn rounded-0" href="save-disconnected-entity-in-entity-framework.aspx.html">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                        
+
+    <h1>Methods to Attach Disconnected Entities in EF 6</h1>
+    <p>Here you will learn about different methods in Entity Framework 6.x that attach disconnected entity graphs to a context.</p>
+     <p>Saving an entity in the disconnected scenario is different than in the connected scenario. There are two things we need to do when we get a disconnected entity graph or even a single disconnected entity. 
+         First, we need to attach entities with the new context instance and make the context aware about these entities. Second, set an appropriate <code>EntityState</code> to each entity manually because the instance doesn't know anything about the operations performed on the disconnected entities, so it cannot apply the appropriate <code>EntityState</code> automatically.</p>
+    <p>The following figure illustrates this process.</p>
+    <figure class="thumbnail center-block">
+        <a href="../images/EF6/attach-disconnected-entity-graph.png" target="_blank" title="Attach Disconnected Entity Graph ">
+            <img src="../images/EF6/attach-disconnected-entity-graph.png" alt="attach disconnected entity graph" /></a>
+    </figure>
+
+    <p>Entity Framework provides the following methods that attach disconnected entities to a context and also set the <code>EntityState</code> to each entity in an entity graph. </p>
+    <ul class="list">
+        <li>DbContext.Entry()</li>
+        <li>DbSet.Add()</li>
+        <li>DbSet.Attach()</li>
+    </ul>
+    <h2>DbContext.Entry()</h2>
+    <p>The <code>Entry()</code> method of <code>DbContext</code> class returns an instance of <code>DbEntityEntry</code> for the specified entity. 
+        The <code>DbEntityEntry</code> object provides various information about the specified entity and also the ability to perform an action on the entity.
+        Most importantly, we can change the <code>EntityState</code> of the specified entity using <code>State</code> property, as shown below.
+    </p>
+    <p><code>context.Entry(entity).state = EntityState.Added/Modified/Deleted</code></p>
+    <p>The <code>Entry</code> method attaches an entire entity graph to a context with the specified state to a parent entity and also sets a different <code>EntityState</code> to other entities. Consider the following example.</p>
+    <pre class="csharpcode">
+<span class="kwrd">var</span> student = <span class="kwrd">new</span> <span class="userclass">Student</span>() { <span class="rem">//Root entity (empty key)</span>
+        StudentName = <span class="str">"Bill"</span>,
+        StandardId = 1,
+        Standard = new <span class="userclass">Standard</span>()   <span class="rem">//Child entity (with key value)</span>
+                    {
+                        StandardId = 1,
+                        StandardName = "Grade 1"
+                    },
+        Courses = new List&lt;<span class="userclass">Course</span>&gt;() {
+            new <span class="userclass">Course</span>(){  CourseName = "Machine Language" }, <span class="rem">//Child entity (empty key)</span>
+            new <span class="userclass">Course</span>(){  CourseId = 2 } <span class="rem">//Child entity (with key value)</span>
+        }
+    };
+
+<span class="kwrd">using</span> (<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolDBEntities())
+{
+    context.Entry(student).State = <span class="userclass">EntityState</span>.Added; 
+
+    <span class="kwrd">foreach</span> (var entity <span class="kwrd">in</span> context.ChangeTracker.Entries()){
+        Console.WriteLine(<span class="str">"{0}: {1}"</span>, entity.Entity.GetType().Name, entity.State);
+    } 
+}
+</pre>
+    <div class="outputLabel">Output:</div>
+    <samp>
+        Student: Added <br />
+        Standard: Added<br />
+        Course: Added<br />
+        Course: Added
+    </samp>
+<p>In the above example, the <code>Studnet</code> entity graph includes the <code>Standard</code> and <code>Course</code> entities. 
+    <code>context.Entry(student).State = <span class="userclass">EntityState</span>.Added; </code> sets the Added state to the parent entity as well as to all other child entities 
+    irrespective of whether a child entity contains an empty key value or not. Thus, it is recommended to use the <code>Entry()</code> method carefully.
+</p>
+    <p>The following table lists the behaviour of the <code>Entry()</code> method. </p>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed">
+
+            <tr>
+                <th>Parent Entity State</th>
+                <th>Entity State of child entities</th>
+            </tr>
+            <tr>
+                <td>Added</td>
+                <td>Added</td>
+            </tr>
+            <tr>
+                <td>Modified</td>
+                <td>Unchanged</td>
+            </tr>
+            <tr>
+                <td>Deleted</td>
+                <td>All child entities will be null</td>
+            </tr>
+        </table>
+    </div>
+
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+
+    <h2>DbSet.Add()</h2>
+
+    <p>The <code>DbSet.Add()</code> method attaches the entire entity graph to a context and automatically applies the Added state to all entities.</p>
+
+    <pre class="csharpcode">
+<span class="rem">//disconnected entity graph</span>
+<span class="userclass">Student</span> disconnectedStudent = <span class="kwrd">new</span> <span class="userclass">Student</span>() { StudentName = <span class="str">"New Student"</span> };
+disconnectedStudent.StudentAddress = <span class="kwrd">new</span> <span class="userclass">StudentAddress</span>() { Address1 = <span class="str">"Address"</span>, City = <span class="str">"City1"</span> };
+
+<span class="kwrd">using</span> (<span class="kwrd">var</span> context = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{
+    context.Students.Add(disconnectedStudent);
+                
+    <span class="rem">// get DbEntityEntry instance to check the EntityState of specified entity</span>
+    <span class="kwrd">var</span> studentEntry = context.Entry(disconnectedStudent);
+    <span class="kwrd">var</span> addressEntry = context.Entry(disconnectedStudent.StudentAddress);
+
+    <span class="userclass">Console</span>.WriteLine(<span class="str">"Student: {0}"</span>, studentEntry.State);
+    <span class="userclass">Console</span>.WriteLine(<span class="str">"StudentAddress: {0}"</span>, addressEntry.State);
+}
+</pre>
+    <div class="outputLabel">Output:</div>
+    <samp>
+        Student: Added
+        <br />
+        StudentAddress: Added
+    </samp>
+    <p>The <code>DbSet.Add()</code> method attaches the entire entity graph to a context with the Added state to each entity. 
+      Calling <code>context.Savechanges()</code> will execute the INSERT command for all the entities, which will insert new records in the appropriate database table.</p>
+    <h2>DbSet.Attach()</h2>
+
+    <p>The <code>DbSet.Attach()</code> method attaches an entire entity graph to the new context with the Unchanged entity state.</p>
+
+    <pre class="csharpcode">
+<span class="rem">//disconnected entity graph</span>
+<span class="userclass">Student</span> disconnectedStudent = <span class="kwrd">new</span> <span class="userclass">Student</span>() { StudentName = <span class="str">"New Student"</span> };
+disconnectedStudent.StudentAddress = <span class="kwrd">new</span> <span class="userclass">StudentAddress</span>() { Address1 = <span class="str">"Address"</span>, City = <span class="str">"City1"</span> };
+
+<span class="kwrd">using</span> (<span class="kwrd">var</span> context = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{
+    context.Students.Attach(disconnectedStudent);
+                
+    <span class="rem">// get DbEntityEntry instance to check the EntityState of specified entity</span>
+    <span class="kwrd">var</span> studentEntry = context.Entry(disconnectedStudent);
+    <span class="kwrd">var</span> addressEntry = context.Entry(disconnectedStudent.StudentAddress);
+
+    <span class="userclass">Console</span>.WriteLine(<span class="str">"Student: {0}"</span>,studentEntry.State);
+    <span class="userclass">Console</span>.WriteLine(<span class="str">"StudentAddress: {0}"</span>,addressEntry.State);
+}
+</pre>
+    <div class="outputLabel">Output:</div>
+    <samp>
+        Student: Unchanged
+        <br />
+        StudentAddress: Unchanged
+    </samp>
+
+
+    
+
+                        <div>
+                            <hr />
+                            <a href="https://github.com/entityframeworktutorial/EF6-DBFirst-Demo" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download EF 6 DB-First Demo Project from Github</a>
+                        </div>
+                        
+<div class="row">
+    <hr />
+    
+    
+    <div class="col-xl-12 text-center">
+       <div id="124859-19"><script src="http://ads.themoneytizer.com/s/gen.js?type=19"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=19"></script></div>
+    </div>
+
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious1_lnkPrev1" class="btn  rounded-0" href="../entity-relationships.aspx.html"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious1_lnkNext1" class="btn rounded-0" href="save-disconnected-entity-in-entity-framework.aspx.html">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    
+<div class=" d-none d-xl-block col-xl-4 rightSidebar">
+    <div class="row">
+        <div class="col-12">
+            <div class="popular-articles col-12">
+                <ul class="list-group article-items one">
+                    
+                    <li class="list-group-item intro"><a href="https://entityframework-extensions.net/fastest-way-to-insert?z=eft-tl" onclick="_gaq.push(['_trackEvent', 'ef_ext_tl', 'click', 'LINK CLICK', 1, true]);" target="_blank" rel="nofollow  noreferrer" title="Improve EF performance using Entity Framework Extension">Fastest Way to Insert using EF Extensions</a></li>
+                    <li class="list-group-item intro"><a href="https://www.tutorialsteacher.com" target="_blank" title="C#, ASP.NET MVC, LINQ, TypeScript, Node.js, TypeScirpt">Learn C#, MVC, ASP.NET Core, LINQ</a></li>
+
+                </ul>
+            </div>
+
+            
+            <div class="mt-3 ml-2">
+                <div id="124859-2">
+                    <script src="http://ads.themoneytizer.com/s/gen.js?type=2"></script>
+                    <script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=2"></script>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div class="mt-3 ml-2" id="stickyAdDiv">
+                <div id="124859-3"><script src="http://ads.themoneytizer.com/s/gen.js?type=3"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=3"></script></div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+                </div>
+            </div>
+            
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="../privacy-policy.aspx.html" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="../cdn-cgi/l/email-protection.html#d1b7b4b4b5b3b0b2ba91b4bfa5b8a5a8b7a3b0bcb4a6bea3baa5a4a5bea3b8b0bdffbfb4a5"><span class="__cf_email__" data-cfemail="25434040414744464e65404b514c515c4357444840524a574e5150514a574c44490b4b4051">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="../basics/what-is-entity-in-entityframework.aspx.html">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="../efcore/entity-framework-core.aspx.html">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="introduction.aspx.html">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="../code-first/what-is-code-first.aspx.html">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="http://entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="../aboutme.aspx.html">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="../privacy-policy.aspx.html">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="../terms-of-use.aspx.html">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="http://ads.themoneytizer.com/s/gen.js?type=6"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=6"></script></div>
+
+        </section>
+    </div>
+    <script src="../scripts/jquery.min.js"></script>
+    
+    <script src="../scripts/popper.1.12.9.min.js"></script>
+    <script src="../App_Themes/bs/bootstrap.min.js"></script>
+    <script src="http://www.entityframeworktutorial.net/scripts/eftGeneralScript.min.js?v=1.3"></script>
+    <script type="text/javascript" src="http://cdn.pubguru.com/fb.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            stickyAd();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+                stickyAd();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            var path = $(location).attr('pathname');
+            $('#leftmenu li a[href="' + path + '"]').addClass('active');
+            $('#topMenu ul li a[href="/entityframework6/introduction.aspx"]').addClass('active');
+
+            maintainLeftMenuPos();
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+</body>
+</html>

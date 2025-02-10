@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="msvalidate.01" content="E9D23C1B9284F473D856EC0E372D6F64" /><title>
+
+</title><link href="App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="App_Themes/css/home.min.css@v=1.css" rel="stylesheet" />
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <meta name="description" content="privacy policy" />
+
+   
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-33844821-1');
+</script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="index.html">
+            <img src="images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="what-is-entityframework.aspx.html">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="efcore/entity-framework-core.aspx.html">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="entityframework6/introduction.aspx.html">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="code-first/what-is-code-first.aspx.html">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="faq.aspx.html">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="entity-framework-quiz.aspx.html">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="entity-framework-cheat-sheet.aspx.html">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="efcore/entity-framework-core.aspx.html">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="code-first/what-is-code-first.aspx.html">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="entityframework6/introduction.aspx.html">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="entity-framework-quiz.aspx.html">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="http://www.entityframeworktutorial.net/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="entity-framework-cheat-sheet.aspx.html">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 pr-md-0 col-lg-12 col-xl-12">
+            <div class="m-3">
+                <h1>Terms of use:</h1>
+<p>USE OF ENTITYFRAMEWORKTUTORIAL.NET IMPLIES AN AGREEMENT TO THE FOLLOWING:</p>
+
+<h3>Copyright Information:</h3>
+<p>All pages and graphics on this web site are the property of entityframeworktutorial.net.</p>
+<p>Pages, code or other content from entityframeworktutorial.net may not be redistributed or reproduced in any way, shape, or form without the written permission of entityframeworktutorial.net. Failure to do so is a violation of copyright laws.</p>
+
+<h3>Fair Use:</h3>
+<p>Fair use defines TutorialsTeacher's exceptions to the rights protected by copyright laws.</p>
+<p>Fair use of entityframeworktutorial.net includes using copyrighted material:</p>
+<ul>
+
+    <li>Copying examples and code snippets for non-profit class room teaching and research.</li>
+    <li>In tech news </li>
+    <li>In research</li>
+</ul>
+
+<h3>Not Favorable Use:</h3>
+<ul>
+    <li>Copying for profitable or commercial use.</li>
+    <li>Massive or verbatim copying.</li>
+    <li>Copying large quantities.</li>
+    <li>Copying and publishing websits.</li>
+    <li>Copying and publish pdf books.</li>
+    <li>Free or commercial video training on free or personal websites.</li>
+</ul>
+<h3>Linking to entityframeworktutorial.net:</h3>
+<p>Any information technology web site may link to any of the pages on entityframeworktutorial.net. However, pages from entityframeworktutorial.net may not be embedded in a frame from the referring site, without the written permission of entityframeworktutorial.net.</p>
+
+<h3>Warranties:</h3>
+<p>entityframeworktutorial.net is provided without warranty of any kind. There are no guarantees that use of the site will not be subject to interruptions. All direct or indirect risk related to use of the site is borne entirely by the user. All code provided by entityframeworktutorial.net is provided as examples without warranties to performance, fitness, merchantability, and/or any other warranty (whether expressed or implied).</p>
+<p>entityframeworktutorial.net may contain inaccuracies or errors. We make no guarantees regarding the accuracy of the site or its contents. If you discover that the site or its contents contains errors, please email us at <a href="cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="cdaba8a8a9afacaea68da8a3b9a4b9b4abbfaca0a8baa2bfa6b9b8b9a2bfa4aca1e3a3a8b9">[email&#160;protected]</a>.</p>
+
+<h3>Linked Sites:</h3>
+<p>entityframeworktutorial.net contains links to other sites. It is not responsible for any content that appears on these linked sites.</p>
+<h3>Your Conduct:</h3>
+<p>While using this site, you agree to have read and accepted all the information on this page.</p><br /><br />
+                </div>
+            </div>
+        </div>
+        </div>
+
+        </div>
+    
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="privacy-policy.aspx.html" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="cdn-cgi/l/email-protection.html#2e484b4b4a4c4f4d456e4b405a475a57485c4f434b59415c455a5b5a415c474f4200404b5a"><span class="__cf_email__" data-cfemail="b7d1d2d2d3d5d6d4dcf7d2d9c3dec3ced1c5d6dad2c0d8c5dcc3c2c3d8c5ded6db99d9d2c3">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="basics/what-is-entity-in-entityframework.aspx.html">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="efcore/entity-framework-core.aspx.html">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="entityframework6/introduction.aspx.html">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="code-first/what-is-code-first.aspx.html">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="http://entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="aboutme.aspx.html">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="privacy-policy.aspx.html">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="terms-of-use.aspx.html">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="http://ads.themoneytizer.com/s/gen.js?type=6"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=6"></script></div>
+
+    <script src="scripts/jquery.min.js"></script>
+    
+    <script src="scripts/popper.1.12.9.min.js"></script>
+    <script src="App_Themes/bs/bootstrap.min.js"></script>
+    <script src="scripts/eftGeneralScript.min.js@v=1"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            $('#topMenu ul li a[href="/"]').addClass('active');
+
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+    </div>
+</body>
+</html>

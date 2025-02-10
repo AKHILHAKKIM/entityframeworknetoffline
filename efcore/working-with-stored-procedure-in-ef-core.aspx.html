@@ -1,0 +1,827 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Working with Stored Procedure in Entity Framework Core
+</title><link href="../App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="http://www.entityframeworktutorial.net/App_Themes/css/eftstyle.min.css?v=1.9" rel="stylesheet" type="text/css" />
+    
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <meta id="ctl00_head_metaKeyword" name="keywords" content="stored procedure,efcore, storedprocedure in efcore, execute storedprocedure in ef core, storedprocedure in entity framework core,storedprocedures, storedprocedure fromsql, storedprocedure executesqlcommand,executesqlcommand, executesqlcommand efcore,how to, entity framework,Entity Framework core tutorial,efcore Tutorial,ef, ef core, entity framework"></meta>
+    <meta name="description" content="Learn how to create and execute the stored procedures in Entity Framework Core." />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx"},"headline":"Working with Stored Procedure in Entity Framework Core","author":{"@type":"Person","name":"Ravi Karia","sameAs":["https://www.entityframeworktutorial.net/aboutme.aspx","https://www.linkedin.com/in/ravikaria"]},"dateModified":"2021-06-26T15:27:49.3389770Z","description":"Learn how to create and execute the stored procedures in Entity Framework Core."}</script>
+    <link rel="canonical" href="https://www.entityframeworktutorial.net/efcore/working-with-stored-procedure-in-ef-core.aspx" />
+
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-33844821-1');
+    </script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="../index.html">
+            <img src="../images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="../index.html" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="../what-is-entityframework.aspx.html">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="entity-framework-core.aspx.html">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../entityframework6/introduction.aspx.html">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../code-first/what-is-code-first.aspx.html">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="../faq.aspx.html">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../entity-framework-quiz.aspx.html">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../entity-framework-cheat-sheet.aspx.html">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="entity-framework-core.aspx.html">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="../code-first/what-is-code-first.aspx.html">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="../entityframework6/introduction.aspx.html">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="../entity-framework-quiz.aspx.html">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="http://www.entityframeworktutorial.net/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="../entity-framework-cheat-sheet.aspx.html">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        
+        <nav class="navbar menuLeft p-0 navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbarLeft">
+                <div class="menuVerticalParent">
+                    <ul class="menuVertical" id="leftmenu">
+                        <li><a href="entity-framework-core.aspx.html">EF Core - Introduction</a></li>
+                        <li><a href="install-entity-framework-core.aspx.html">EF Core - Installation</a></li>
+                        <li><a href="create-entities.aspx.html">EF Core - Create Entities</a></li>
+                        <li><a href="entity-framework-core-dbcontext.aspx.html">EF Core - Create DbContext</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="entity-framework-core-console-application.aspx.html">Working with DbContext</a></li>
+                                <li><a href="changetracker-in-ef-core.aspx.html">Track Changes of Entities</a></li>
+                                <li><a href="db-connection-strings.aspx.html">DB Connection Strings</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="entity-framework-core-migration.aspx.html">EF Core - Migrations</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="generate-sql-script.aspx.html">Generate SQL Script</a></li>
+                                <li><a href="pmc-commands-for-ef-core-migration.aspx.html">PMC/PowerShell Commands</a></li>
+                                <li><a href="cli-commands-for-ef-core-migration.aspx.html">.NET Core CLI Commands</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="saving-data-in-connected-scenario-in-ef-core.aspx.html">EF Core - Saving Data</a></li>
+                        <li><a href="querying-in-ef-core.aspx.html">EF Core - Querying</a></li>
+                        <li><a href="saving-data-in-disconnected-scenario-in-ef-core.aspx.html">Disconnected Scenario: Insert Data</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="update-data-in-entity-framework-core.aspx.html">Update Data</a></li>
+                                <li><a href="delete-data-in-entity-framework-core.aspx.html">Delete Data</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li><a href="conventions-in-ef-core.aspx.html">EF Core - Conventions</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="one-to-many-conventions-entity-framework-core.aspx.html">One-to-Many Conventions</a></li>
+                                <li><a href="one-to-one-conventions-entity-framework-core.aspx.html">One-to-One Conventions</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="configuration-in-entity-framework-core.aspx.html">EF Core - Configurations</a></li>
+                        <li><a href="fluent-api-in-entity-framework-core.aspx.html">EF Core - Fluent API</a>
+
+                        </li>
+                        <li>
+                            <ul>
+                                <li><a href="configure-one-to-many-relationship-using-fluent-api-in-ef-core.aspx.html">Configure One-to-Many Relationship</a></li>
+                                <li><a href="configure-one-to-one-relationship-using-fluent-api-in-ef-core.aspx.html">Configure One-to-One Relationship</a></li>
+                                <li><a href="configure-many-to-many-relationship-in-ef-core.aspx.html">Configure Many-to-Many Relationship</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li><a href="shadow-property.aspx.html">Shadow Property</a></li>
+                        <li><a href="working-with-disconnected-entity-graph-ef-core.aspx.html">Working with Disconnected Entity Graph</a></li>
+                        <li><a href="changetracker-trackgraph-ef-core.aspx.html">Tracking Entity Graph</a></li>
+                        <li><a href="raw-sql-queries-in-ef-core.aspx.html">Raw SQL Queries</a></li>
+                        <li><a href="working-with-stored-procedure-in-ef-core.aspx.html">Working with Stored Procedure</a></li>
+                        <li><a href="logging-in-entityframework-core.aspx.html">Logging</a></li>
+
+                        <li><a href="create-model-for-existing-database-in-ef-core.aspx.html">EF Core - Existing Database</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="middleContent" id="middleContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pr-md-0 col-lg-12 col-xl-8">
+                        
+<div class="lb-ad mt-1">
+    
+    <a href="https://entityframework-extensions.net?z=eft" target="_blank" rel="nofollow" >
+        <img src="http://www.entityframeworktutorial.net/images/ef-ext-lb.jpg" class="eftext-img" /></a>
+</div>
+
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious_lnkPrev1" class="btn  rounded-0" href="raw-sql-queries-in-ef-core.aspx.html"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious_lnkNext1" class="btn rounded-0" href="logging-in-entityframework-core.aspx.html">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                        
+    <h1>Working with Stored Procedure in Entity Framework Core</h1>
+    <p>
+        Here, you will learn how to execute the database stored procedure in Entity Framework Core.
+    </p>
+
+    <p>
+        EF Core provides the following methods to execute a stored procedure:
+    </p>
+
+    <ol>
+        <li><code>DbSet&lt;TEntity&gt;.FromSql()</code>
+        </li>
+        <li><code>DbContext.Database.ExecuteSqlCommand()</code>
+        </li>
+    </ol>
+
+    <p>
+        There are some limitations on the execution of database stored procedures using FromSql or ExecuteSqlCommand methods in EF Core2:
+    </p>
+
+    <ol>
+        <li>Result must be an entity type. This means that a stored procedure must return all the columns of the corresponding table of an entity.
+        </li>
+        <li>Result cannot contain related data. This means that a stored procedure cannot perform JOINs to formulate the result. 
+        </li>
+        <li>Insert, Update and Delete procedures cannot be mapped with the entity, so the <code>SaveChanges</code> method cannot call stored procedures for CUD operations.
+        </li>
+    </ol>
+
+    <p>
+        Let's create our stored procedure in MS SQL Server before we execute it in EF Core.
+    </p>
+
+    <p>
+        If you follow the database-first approach, then execute the following script in your local SQL Server database:
+    </p>
+
+    <pre class="csharpcode">
+USE [SchoolDB]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetStudents]
+            @FirstName varchar(50)
+        AS
+        BEGIN
+            SET NOCOUNT ON;
+            select * from Students where FirstName like @FirstName +<span class="str">'%'</span>
+        END
+GO
+</pre>
+    <p>
+        If you are following the code-first approach, then follow the below steps:
+    </p>
+
+    <p>
+        1. Add an empty migration by executing the following command in NPM (NuGet Package Manager):
+    </p>
+
+    <p>
+        <code>PM&gt; Add-migration sp-GetStudents</code>
+    </p>
+
+    <p>
+        2. Write the following code in the Up method of empty migration class in <code>&lt;DateTime&gt;_sp-GetStudents.cs</code>:
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">public partial class</span> <span class="userclass">spGetStudents</span> : <span class="userclass">Migration</span>
+{
+    <span class="kwrd">protected override void</span> Up(<span class="userclass">MigrationBuilder</span> migrationBuilder)
+    {
+        <span class="kwrd">var</span> sp = <span class="str">@"CREATE PROCEDURE [dbo].[GetStudents]
+                    @FirstName varchar(50)
+                AS
+                BEGIN
+                    SET NOCOUNT ON;
+                    select * from Students where FirstName like @FirstName +'%'
+                END"</span>;
+
+        migrationBuilder.Sql(sp);
+    }
+
+    <span class="kwrd">protected override void</span> Down(<span class="userclass">MigrationBuilder</span> migrationBuilder)
+    {
+
+    }
+}
+</pre>
+    <p>
+        3. Now, create the above stored procedure in the database by executing the following command in NPM:
+    </p>
+    <p><code>PM&gt; Update-database</code></p>
+    <p>This will create the <code>GetStudents</code> stored procedure in the SQL Server database.</p>
+    <h2>Execute Stored Procedures using FromSql</h2>
+
+    <p>
+        As mentioned in the previous chapter, the <code>FromSql</code> method of <code>DbSet</code> can be used to execute the raw SQL queries to the underlying database. 
+        In the same way, it can be used to execute the stored procedure which returns entity data, but with some limitations.
+    </p>
+
+    <p>
+        In the database, we can execute the <code>GetStudents</code> stored procedure with an INPUT parameter value like below:
+    </p>
+
+    <pre class="csharpcode">
+GetStudents "Bill"
+-- or
+exec GetStudents "Bill"
+</pre>
+    <p>
+        You can execute SP using <code>FromSql</code> method in EF Core in the same way as above, as shown below.
+    </p>
+
+<pre class="csharpcode">
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+
+<span class="kwrd">var</span> students = context.Students.FromSql(<span class="str">"GetStudents 'Bill'"</span>).ToList();
+</pre>
+    <p>
+        You can also pass a parameter value using C# string interpolation syntax, as shown below.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">var</span> name = "Bill";
+
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+<span class="kwrd">var</span> students = context.Students
+                      .FromSql($<span class="str">"GetStudents </span>{name}<span class="str">"</span>)
+                      .ToList();
+
+<span class="rem">//or</span>
+<span class="rem">//var students = context.Students.FromSql($"exec GetStudents {name}").ToList();</span>
+</pre>
+
+    <p>
+        Use <code>SqlParameter</code> instance to specify the value of <code>IN</code> or <code>OUT</code> parameters as below:
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+<span class="kwrd">var</span> param = <span class="kwrd">new</span> SqlParameter(<span class="str">"@FirstName"</span>, <span class="str">"Bill"</span>);
+<span class="rem">//or</span>
+<span class="rem">/*var param = new SqlParameter() {
+                    ParameterName = "@FirstName",
+                    SqlDbType =  System.Data.SqlDbType.VarChar,
+                    Direction = System.Data.ParameterDirection.Input,
+                    Size = 50,
+                    Value = "Bill"
+};*/</span>
+
+<span class="kwrd">var</span> students = context.Students.FromSql(<span class="str">"GetStudents @FirstName"</span>, param).ToList();
+</pre>
+    <p>
+        You can also specify <code>@p0</code> for the first parameter, <code>@p1</code> for the second, and so on.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+
+<span class="kwrd">var</span> students = context.Students.FromSql(<span class="str">"GetStudents @p0"</span>,<span class="str">"Bill"</span>).ToList();
+</pre>
+    <p>
+        In the above example, <code>@p0</code> is used for the first parameter because named parameters are not supported yet in EF Core.
+    </p>
+
+    <p>
+        <b>Note:</b> All entities in the result will be tracked by the <code>DbContext</code> by default.
+        If you execute the same stored procedure with the same parameters multiple times, then it will execute the same SQL statement each time, but it will only track one result set. 
+        For example, the following example will execute the <code>GetStudents</code> stored procedure three times, but it will cache and track only one copy of the result.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+
+<span class="kwrd">var</span> list1 = context.Students.FromSql(<span class="str">"GetStudents 'Bill'"</span>).ToList();
+<span class="kwrd">var</span> list2 = context.Students.FromSql(<span class="str">"GetStudents 'Bill'"</span>).ToList();
+<span class="kwrd">var</span> list3 = context.Students.FromSql(<span class="str">"GetStudents 'Bill'"</span>).ToList();
+</pre>
+
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+    
+    <h2>Execute Stored Procedure using ExecuteSqlCommand()</h2>
+
+    <p>
+        The <code>ExecuteSqlCommand()</code> method is used to execute database commands as a string. 
+        It returns an integer for the number of rows was affected through the specified command.
+    </p>
+
+<pre class="csharpcode">
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+
+<span class="kwrd">var</span> rowsAffected = context.Database.ExecuteSqlCommand(<span class="str">"Update Students set FirstName = 'Bill' where StudentId = 1;"</span>);
+</pre>
+
+    <p>
+        In the above example, the update command is passed in the <code>ExecuteSqlCommand</code> method. 
+        The value of <code>rowsAffected</code> will be 1 because only 1 row affected with the specified update command.
+    </p>
+
+    <p>
+        In the same way, we can execute stored procedures for create, update and delete commands. 
+        Consider the following stored procedure which inserts a record in the <code>Students</code> table in the database:
+    </p>
+
+    <pre class="csharpcode">
+CREATE PROCEDURE CreateStudent
+    @FirstName Varchar(50),
+    @LastName Varchar(50)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    Insert into Students(
+           [FirstName]
+           ,[LastName]
+           )
+ Values (@FirstName, @LastName)
+END
+GO
+</pre>
+    <p>
+        Now, you can execute the above SP as below.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext(); 
+
+context.Database.ExecuteSqlCommand(<span class="str">"CreateStudents @p0, @p1"</span>, parameters: <span class="kwrd">new</span>[] { <span class="str">"Bill"</span>, <span class="str">"Gates"</span> });
+</pre>
+    <p>
+        In the same way, you can execute stored procedures for Update and Delete commands.
+    </p>
+
+
+
+                        
+<div class="row">
+    <hr />
+    
+    
+    <div class="col-xl-12 text-center">
+       <div id="124859-19"><script src="http://ads.themoneytizer.com/s/gen.js?type=19"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=19"></script></div>
+    </div>
+
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious1_lnkPrev1" class="btn  rounded-0" href="raw-sql-queries-in-ef-core.aspx.html"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious1_lnkNext1" class="btn rounded-0" href="logging-in-entityframework-core.aspx.html">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    
+                    
+<div class=" d-none d-xl-block col-xl-4 rightSidebar">
+    <div class="row">
+        <div class="col-12">
+            <div class="popular-articles col-12">
+                <ul class="list-group article-items one">
+                    
+                    <li class="list-group-item intro"><a href="https://entityframework-extensions.net/fastest-way-to-insert?z=eft-tl" onclick="_gaq.push(['_trackEvent', 'ef_ext_tl', 'click', 'LINK CLICK', 1, true]);" target="_blank" rel="nofollow  noreferrer" title="Improve EF performance using Entity Framework Extension">Fastest Way to Insert using EF Extensions</a></li>
+                    <li class="list-group-item intro"><a href="https://www.tutorialsteacher.com" target="_blank" title="C#, ASP.NET MVC, LINQ, TypeScript, Node.js, TypeScirpt">Learn C#, MVC, ASP.NET Core, LINQ</a></li>
+
+                </ul>
+            </div>
+
+            
+            <div class="mt-3 ml-2">
+                <div id="124859-2">
+                    <script src="http://ads.themoneytizer.com/s/gen.js?type=2"></script>
+                    <script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=2"></script>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div class="mt-3 ml-2" id="stickyAdDiv">
+                <div id="124859-3"><script src="http://ads.themoneytizer.com/s/gen.js?type=3"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=3"></script></div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+                </div>
+            </div>
+            
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="../privacy-policy.aspx.html" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="../cdn-cgi/l/email-protection.html#03656666676162606843666d776a777a6571626e66746c71687776776c716a626f2d6d6677"><span class="__cf_email__" data-cfemail="66000303020407050d260308120f121f0014070b031109140d12131209140f070a48080312">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="../basics/what-is-entity-in-entityframework.aspx.html">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="entity-framework-core.aspx.html">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="../entityframework6/introduction.aspx.html">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="../code-first/what-is-code-first.aspx.html">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="http://entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="../aboutme.aspx.html">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="../privacy-policy.aspx.html">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="../terms-of-use.aspx.html">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="http://ads.themoneytizer.com/s/gen.js?type=6"></script><script src="http://ads.themoneytizer.com/s/requestform.js?siteId=124859&amp;formatId=6"></script></div>
+
+        </section>
+    </div>
+    <script src="../scripts/jquery.min.js"></script>
+    
+    <script src="../scripts/popper.1.12.9.min.js"></script>
+    <script src="../App_Themes/bs/bootstrap.min.js"></script>
+    <script src="http://www.entityframeworktutorial.net/scripts/eftGeneralScript.min.js?v=1.3"></script>
+    <script type="text/javascript" src="http://cdn.pubguru.com/fb.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            stickyAd();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+                stickyAd();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            var path = $(location).attr('pathname');
+            $('#leftmenu li a[href="' + path + '"]').addClass('active');
+            $('#topMenu ul li a[href="/efcore/entity-framework-core.aspx"]').addClass('active');
+
+            maintainLeftMenuPos();
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+</body>
+</html>

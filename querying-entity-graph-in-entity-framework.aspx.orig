@@ -1,0 +1,928 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	LINQ-to-Entities Queries in Entity Framework
+</title><link href="../App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="../App_Themes/css/eftstyle.min.css?v=1.9" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <meta id="ctl00_head_metaKeyword" name="keywords" content="linq-to-entities, linqtoentities, ef core, ef core linqtoentities, Entity framework 6, entity framework core query, ef query, how to write queries in entity framework,ef6, ef queries, ef linq query, get result in entity framework, projection queries in ef, "></meta>
+    <meta name="description" content="Learn how to write LINQ-to-Entities queries and get the result in Entity Framework 6.x as well as Entity Framework Core" /><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.entityframeworktutorial.net/entityframework6/linq-to-entities-queries-in-entity-framework.aspx"
+  },
+  "headline": "Linq-to-Entities Query",
+  "author": {
+    "@type": "Person",
+    "name": "Ravi Karia",
+    "sameAs": [
+      "https://www.entityframeworktutorial.net/aboutme.aspx",
+      "https://www.linkedin.com/in/ravikaria"
+    ]
+  },
+  "dateModified": "2023-11-07T07:02:35.0059834Z",
+  "description": "Learn how to write LINQ-to-Entities queries and get the result in Entity Framework 6.x as well as Entity Framework Core"
+}
+</script>
+    <link rel="canonical" href="https://www.entityframeworktutorial.net/entityframework6/linq-to-entities-queries-in-entity-framework.aspx" />
+
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-33844821-1');
+    </script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="http://www.entityframeworktutorial.net">
+            <img src="../images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="/what-is-entityframework.aspx">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/code-first/what-is-code-first.aspx">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/faq.aspx">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-cheat-sheet.aspx">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="/entity-framework-cheat-sheet.aspx">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar menuLeft p-0 navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbarLeft">
+                <div class="menuVerticalParent">
+                    <ul class="menuVertical" id="leftmenu">
+                        <li><a href="/entityframework6/introduction.aspx">Introduction</a></li>
+                        <li><a href="/entityframework6/create-entity-data-model.aspx">Create Entity Data Model</a></li>
+                        <li><a href="/entityframework6/model-browser-in-entity-framework.aspx">Model Browser</a></li>
+                        <li><a href="/entityframework6/dbcontext.aspx">DbContext Class</a></li>
+                        <li><a href="/entityframework6/dbset.aspx">DbSet Entities</a></li>
+                        <li><a href="/entityframework6/add-update-delete-data-in-entityframework.aspx">Add/Update/Delete Data</a></li>
+                        <li><a href="/entityframework6/querying-with-entityframework.aspx">Querying</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/entityframework6/linq-to-entities-queries-in-entity-framework.aspx">LINQ-to-Entities Queries</a></li>
+                                <li><a href="/entityframework6/eager-loading-in-entity-framework.aspx">Eager Loading</a></li>
+                                <li><a href="/entityframework6/lazyloading-in-entity-framework.aspx">Lazy Loading</a></li>
+                                <li><a href="/entityframework6/explicit-loading-with-dbcontext.aspx">Explicit Loading</a></li>
+                                <li><a href="/entityframework6/raw-sql-query-in-entity-framework.aspx">Raw SQL Query</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/entityframework6/entity-relationships.aspx">Entity Relationships</a></li>
+                        <li><a href="/entityframework6/attach-disconnected-entity-graph.aspx">Attach Disconnected Entities</a></li>
+                        <li><a href="/entityframework6/save-disconnected-entity-in-entity-framework.aspx">Save Disconnected Entity</a></li>
+                        <li><a href="/entityframework6/save-entity-graph.aspx">Save Disconnected Entity Graph</a></li>
+                        <li><a href="/entityframework6/delete-disconnected-entity-in-entity-framework.aspx">Delete Disconnected Entity</a></li>
+                        <li><a href="/entityframework6/async-query-and-save.aspx">Async Query and Save</a></li>
+                        <li><a href="/entityframework6/addrange-removerange.aspx">Add\Remove Multiple Entities</a></li>
+                        <li><a href="/entityframework6/handle-concurrency-in-entity-framework.aspx">Handle Concurrency</a></li>
+                        <li><a href="/entityframework6/stored-procedure-in-entity-framework.aspx">Stored Procedure in EF</a></li>
+                        <li><a href="/entityframework6/crud-using-stored-procedures.aspx">CUD using Stored Procedure</a></li>
+                        <li><a href="/entityframework6/dbentityentry.aspx">DbEntityEntry Class</a></li>
+                        <li><a href="/entityframework6/change-tracking-in-entity-framework.aspx">Change Tracking of Entities</a></li>
+                        <li><a href="/entityframework6/enum-in-entity-framework.aspx">Enum </a></li>
+                        <li><a href="/entityframework6/spatial-datatype-in-entity-framework.aspx">Spatial Data Type</a></li>
+                        <li><a href="/entityframework6/view-in-entity-framework.aspx">DB Views in EF</a></li>
+                        <li><a href="/entityframework6/table-valued-function-in-entity-framework.aspx">Table-valued Function</a></li>
+
+                        <li><a href="/entityframework6/validate-entity-in-entity-framework.aspx">Validate Entity</a></li>
+
+                        <li><a href="/entityframework6/code-based-configuration.aspx">Code-based configuration</a></li>
+                        <li><a href="/entityframework6/database-command-logging.aspx">Db Command Logging</a></li>
+                        <li><a href="/entityframework6/database-command-interception.aspx">Command Interception</a></li>
+                        <li><a href="/entityframework6/transaction-in-entity-framework.aspx">Transaction support</a></li>
+                        <li><a href="/entityframework6/multiple-diagrams-in-entity-framework.aspx">Multiple Diagrams</a></li>
+                        <li><a href="/entityframework6/colored-entity-in-entity-framework.aspx">Colored Entities in Designer</a></li>
+                        <li><a href="/entityframework6/model-first-with-entity-framework.aspx">Model-First Approach</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="middleContent" id="middleContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pr-md-0 col-lg-12 col-xl-8">
+                        
+<div class="lb-ad mt-1">
+    
+    <a href="https://entityframework-extensions.net?z=eft" target="_blank" rel="nofollow" >
+        <img src="/images/ef-ext-lb.jpg" class="eftext-img" /></a>
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious_lnkPrev1" class="btn  rounded-0" href="/entityframework6/querying-with-entityframework.aspx"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious_lnkNext1" class="btn rounded-0" href="/entityframework6/eager-loading-in-entity-framework.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                        
+    <h1>Linq-to-Entities Query</h1>
+
+    <p>Here, you will learn how to write LINQ-to-Entities queries and get the result in Entity Framework 6.x as well as in Entity Framework Core. Visit <span class="sub_link"><a href="http://www.tutorialsteacher.com/linq/linq-tutorials" target="_blank">LINQ Tutorials</a></span> to learn LINQ step by step.</p>
+
+    <p>The <code>DbSet</code> class is derived from <code>IQuerayable</code>. So, we can use <a href="http://www.tutorialsteacher.com/linq/linq-tutorials" target="_blank" title="Learn LINQ">LINQ</a> for querying against <code>DbSet</code>,
+         which will be converted to an SQL query. EF API executes this SQL query to the underlying database, gets the flat result set, converts it into appropriate entity objects and returns it as a query result. </p>
+    <p>The following are some of the standard query operators (or extension methods) that can be used with LINQ-to-Entities queries.</p>
+    <div class="table-responsibe">
+
+        <table class="table table-striped table-bordered table-condensed">
+            <tr>
+                <th class="col-sm-4">LINQ Extension Methods
+                </th>
+            </tr>
+            <tr>
+                <td>First()</td>
+            </tr>
+            <tr>
+                <td>FirstOrDefault() </td>
+            </tr>
+            <tr>
+                <td>Single()         </td>
+            </tr>
+            <tr>
+                <td>SingleOrDefault()</td>
+            </tr>
+            <tr>
+                <td>ToList()         </td>
+            </tr>
+            <tr>
+                <td>Count()          </td>
+            </tr>
+            <tr>
+                <td>Min()            </td>
+            </tr>
+            <tr>
+                <td>Max()            </td>
+            </tr>
+            <tr>
+                <td>Last()           </td>
+            </tr>
+            <tr>
+                <td>LastOrDefault()  </td>
+            </tr>
+            <tr>
+                <td>Average()        </td>
+            </tr>
+
+        </table>
+    </div>
+    <h3>Find()</h3>
+    <p>In addition to LINQ extension methods, we can use the <code>Find()</code> method of <code>DbSet</code> to search the entity based on the primary key value.</p>
+    <p>Let's assume that <code>SchoolDbEntities</code> is our <code>DbContext</code> class and <code>Students</code> is the <code>DbSet</code> property.</p>
+    <pre class="csharpcode">
+<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>();
+<span class="kwrd">var</span> student = ctx.Students.Find(1);
+</pre>
+    <p>In the above example, <code>ctx.Student.Find(1)</code> returns a student record whose StudentId is 1 in the database. If no record is found, then it returns null. The above query will execute the following SQL query.</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> 
+[Extent1].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+[Extent1].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+[Extent1].[StandardId] <span class="kwrd">AS</span> [StandardId]
+<span class="kwrd">FROM</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent1]
+<span class="kwrd">WHERE</span> [Extent1].[StudentId] = @p0',N'@p0 int',@p0=1
+<span class="kwrd">go</span>
+</pre>
+
+    <h3>First/FirstOrDefault</h3>
+
+    <p>If you want to get a single student object, when there are many students, whose name is "Bill" in the database, then use First or FirstOrDefault, as shown below: </p>
+    <p>LINQ Query Syntax:</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> student = (<span class="kwrd">from</span> s <span class="kwrd">in</span> ctx.Students
+                where s.StudentName == <span class="str">"Bill"</span>
+                select s).FirstOrDefault&lt;<span class="userclass">Student</span>&gt;();
+}
+</pre>
+    <p>LINQ Method Syntax:</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> student = ctx.Students
+                    .Where(s =&gt; s.StudentName == <span class="str">"Bill"</span>)
+                    .FirstOrDefault&lt;<span class="userclass">Student</span>&gt;();
+}
+</pre>
+
+    <p>EF 6 executes the following SQL query in the database for the above LINQ query.</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> <span class="kwrd">TOP</span> (1) 
+[Extent1].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+[Extent1].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+[Extent1].[StandardId] <span class="kwrd">AS</span> [StandardId]
+<span class="kwrd">FROM</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent1]
+<span class="kwrd">WHERE</span> <span class="str">'Bill'</span> = [Extent1].[StudentName]
+</pre>
+    <p>EF Core executes the following query in the database.</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> <span class="kwrd">TOP</span> (1) 
+[s].[StudentId], [s].[DoB], [s].[FirstName], [s].[GradeId], 
+[s].[LastName], [s].[MiddleName]
+<span class="kwrd">FROM</span> [Students] AS [s]
+<span class="kwrd">WHERE</span> [s].[FirstName] = N'Bill'
+</pre>
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+
+    <h3>Parameterized Query</h3>
+    <p>EF builds and executes a parameterized query in the database if the LINQ-to-Entities query uses parameters, such as below.</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">string</span> name = <span class="str">"Bill"</span>;
+    <span class="kwrd">var</span> student = ctx.Students
+                  .Where(s =&gt; s.StudentName == name)
+                  .FirstOrDefault&lt;<span class="userclass">Student</span>&gt;();
+}
+</pre>
+    <p>The above query will result into the following SQL query in EF 6.</p>
+     <pre class="csharpcode">
+<span class="kwrd">SELECT</span> <span class="kwrd">TOP</span> (1) 
+[Extent1].[StudentId] AS [StudentId], 
+[Extent1].[Name] AS [Name]
+<span class="kwrd">FROM</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent1]
+<span class="kwrd">WHERE</span> ([Extent1].[Name] = @p__linq__0) OR (([Extent1].[Name] IS NULL) 
+         AND (@p__linq__0 IS NULL))',N'@p__linq__0 nvarchar(4000)',@p__linq__0=N'Bill'
+</pre>
+
+    <p>The difference between <code>First</code> and <code>FirstOrDefault</code> is that <code>First()</code> will throw an exception if there is no result data for the supplied criteria, whereas <code>FirstOrDefault()</code> returns a default value (null) 
+        if there is no result data.</p>
+
+    <h3>ToList</h3>
+
+    <p>The <code>ToList</code> method returns the collection result. If you want to list all the students with the same name then use <code>ToList()</code>:</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> studentList = ctx.Students.Where(s =&gt; s.StudentName == "Bill").ToList();
+}
+</pre>
+    <p>We may also use ToArray, ToDictionary or ToLookup. The above query would result in the following database query:</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> 
+[Extent1].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+[Extent1].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+[Extent1].[StandardId] <span class="kwrd">AS</span> [StandardId]
+<span class="kwrd">FROM</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent1]
+<span class="kwrd">WHERE</span> <span class="str">'Bill'</span> = [Extent1].[StudentName]
+<span class="kwrd">go</span>
+</pre>
+    <h3>GroupBy</h3>
+    <p>Use the <code>group by</code> operator or <code>GroupBy</code> extension method to get the result based on the group by the particular property of an entity. </p>
+    <p>The following example gets the results grouped by each <code>Standard</code>. Use the foreach loop to iterate the group.</p>
+    <p>LINQ Query Syntax:</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> students = <span class="kwrd">from</span> s <span class="kwrd">in</span> ctx.Students 
+                    <span class="kwrd">group</span> s <span class="kwrd">by</span> s.StandardId <span class="kwrd">into</span> studentsByStandard
+                    <span class="kwrd">select</span> studentsByStandard;
+
+    <span class="kwrd">foreach</span> (<span class="kwrd">var</span> groupItem in students)
+    {
+        Console.WriteLine(groupItem.Key);
+
+        foreach (var stud in groupItem)
+        {
+            Console.WriteLine(stud.StudentId);
+        }
+
+    }
+}
+    </pre>
+    <p>LINQ Method Syntax:</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> students = ctx.Students.GroupBy(s =&gt; s.StandardId);
+
+    <span class="kwrd">foreach</span> (<span class="kwrd">var</span> groupItem in students)
+    {
+        Console.WriteLine(groupItem.Key);
+
+        foreach (var stud in groupItem)
+        {
+            Console.WriteLine(stud.StudentId);
+        }
+
+    }
+}
+    </pre>
+    <p>The above query will execute the following database query:</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> 
+[Project2].[C1] <span class="kwrd">AS</span> [C1], 
+[Project2].[StandardId] <span class="kwrd">AS</span> [StandardId], 
+[Project2].[C2] <span class="kwrd">AS</span> [C2], 
+[Project2].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+[Project2].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+[Project2].[StandardId1] <span class="kwrd">AS</span> [StandardId1]
+<span class="kwrd">FROM</span> ( <span class="kwrd">SELECT</span> 
+    [Distinct1].[StandardId] <span class="kwrd">AS</span> [StandardId], 
+    1 <span class="kwrd">AS</span> [C1], 
+    [Extent2].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+    [Extent2].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+    [Extent2].[StandardId] <span class="kwrd">AS</span> [StandardId1], 
+    <span class="kwrd">CASE</span> <span class="kwrd">WHEN</span> ([Extent2].[StudentID] <span class="kwrd">IS</span> <span class="kwrd">NULL</span>) <span class="kwrd">THEN</span> <span class="kwrd">CAST</span>(<span class="kwrd">NULL</span> <span class="kwrd">AS</span> <span class="kwrd">int</span>) <span class="kwrd">ELSE</span> 1 <span class="kwrd">END</span> <span class="kwrd">AS</span> [C2]
+    <span class="kwrd">FROM</span>   (<span class="kwrd">SELECT</span> <span class="kwrd">DISTINCT</span> 
+        [Extent1].[StandardId] <span class="kwrd">AS</span> [StandardId]
+        <span class="kwrd">FROM</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent1] ) <span class="kwrd">AS</span> [Distinct1]
+    <span class="kwrd">LEFT</span> <span class="kwrd">OUTER</span> <span class="kwrd">JOIN</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent2] <span class="kwrd">ON</span> ([Distinct1].[StandardId] = [Extent2].[StandardId]) <span class="kwrd">OR</span> (([Distinct1].[StandardId] <span class="kwrd">IS</span> <span class="kwrd">NULL</span>) <span class="kwrd">AND</span> ([Extent2].[StandardId] <span class="kwrd">IS</span> <span class="kwrd">NULL</span>))
+)  <span class="kwrd">AS</span> [Project2]
+<span class="kwrd">ORDER</span> <span class="kwrd">BY</span> [Project2].[StandardId] <span class="kwrd">ASC</span>, [Project2].[C2] <span class="kwrd">ASC</span>
+<span class="kwrd">go</span>
+</pre>
+    <h3>OrderBy</h3>
+
+    <p>Use the <code>OrderBy</code> operator with ascending/descending keywords in LINQ query syntax to get the sorted entity list.</p>
+    <pre class="csharpcode" >
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+        <span class="kwrd">var</span> students = <span class="kwrd">from</span> s <span class="kwrd">in</span> ctx.Students
+                       <span class="kwrd">orderby</span> s.StudentName ascending
+                       <span class="kwrd">select</span> s;
+}
+</pre>
+    <p>Use the <code>OrderBy</code> or <code>OrderByDescending</code> method to get the sorted entity list.</p>
+<pre class="csharpcode" >
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+        <span class="kwrd">var</span> students = ctx.Students.OrderBy(s => s.StudentName).ToList();
+        <span class="rem">// or descending order </span> 
+        <span class="kwrd">var</span>  descStudents = ctx.Students.OrderByDescending(s => s.StudentName).ToList();
+}
+</pre>
+    <p>The above query will execute the following database query:</p>
+
+<pre class="csharpcode" >
+<span class="kwrd">SELECT</span> 
+[Extent1].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+[Extent1].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+[Extent1].[StandardId] <span class="kwrd">AS</span> [StandardId]
+<span class="kwrd">FROM</span> [dbo].[Student] <span class="kwrd">AS</span> [Extent1]
+<span class="kwrd">ORDER</span> <span class="kwrd">BY</span> [Extent1].[StudentName] <span class="kwrd">ASC</span>
+<span class="kwrd">go</span>
+</pre>
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+    <h3>Anonymous Object Result</h3>
+    <p>LINQ-to-Entities queries do not always have to return entity objects. We may choose some of the properties of an entity as a result. </p>
+    <p>The following query returns a list of anonymous objects which contains <code>StudentId</code> and <code>StudentName</code> properties.</p>
+<p>LINQ Query Syntax:</p>
+<pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> anonymousObjResult = <span class="kwrd">from</span> s <span class="kwrd">in</span> ctx.Students
+                             <span class="kwrd">where</span> s.StandardId == 1
+                             <span class="kwrd">select</span> <span class="kwrd">new</span> { 
+                                Id = st.StudentId, 
+                                Name = st.StudentName
+                             };
+
+    <span class="kwrd">foreach</span> (<span class="kwrd">var</span> obj <span class="kwrd">in</span> anonymousObjResult)
+    {
+        Console.Write(obj.Name);
+    }
+}
+</pre>
+    <p>LINQ Method Syntax:</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> ctx = <span class="kwrd">new</span> <span class="userclass">SchoolDBEntities</span>())
+{    
+    <span class="kwrd">var</span> anonymousObjResult = ctx.Students
+                                .Where(st =&gt; st.Standard == 1)
+                                .Select(st =&gt; <span class="kwrd">new</span> { 
+                                            Id = st.StudentId, 
+                                            Name = st.StudentName });
+
+    <span class="kwrd">foreach</span> (<span class="kwrd">var</span> obj <span class="kwrd">in</span> anonymousObjResult)
+    {
+        Console.Write(obj.Name);
+    }
+}
+</pre>
+    <p>The above query will execute the following database query:</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> 
+[s].[StudentID] AS [Id], [s].[StudentName] AS [Name]
+<span class="kwrd">FROM</span> [Student] <span class="kwrd">AS</span> [s]
+<span class="kwrd">WHERE</span> [s].[StandardId] = 1
+<span class="kwrd">go</span>
+</pre>
+    <p>The projectionResult in the above query will be the anonymous type, because there is no class/entity which has these properties. So, the compiler will mark it as anonymous.</p>
+
+    <h2>Nested queries</h2>
+    <p>You can also execute nested LINQ-to-entity queries as shown below:</p>
+
+    <figure class="thumbnail center-block">
+        <a href="/images/EF5/projection-query-fg1.png" title="entity framework tutorial" target="_blank">
+            <img src="/images/EF5/projection-query-fg1.png" alt="entity relationships in entity framework" /></a>
+    </figure>
+    <p>The nested query shown above will result in an anonymous list with a <code>StudentName</code> and <code>Course</code> object.</p>
+
+    <pre class="csharpcode">
+<span class="kwrd">SELECT</span> 
+[Extent1].[StudentID] <span class="kwrd">AS</span> [StudentID], 
+[Extent1].[StudentName] <span class="kwrd">AS</span> [StudentName], 
+[Join1].[CourseId1] <span class="kwrd">AS</span> [CourseId], 
+[Join1].[CourseName] <span class="kwrd">AS</span> [CourseName], 
+[Join1].[Location] <span class="kwrd">AS</span> [Location], 
+[Join1].[TeacherId] <span class="kwrd">AS</span> [TeacherId]
+<span class="kwrd">FROM</span>  [dbo].[Student] <span class="kwrd">AS</span> [Extent1]
+<span class="kwrd">INNER</span> <span class="kwrd">JOIN</span>  (<span class="kwrd">SELECT</span> [Extent2].[StudentId] <span class="kwrd">AS</span> [StudentId], 
+        [Extent3].[CourseId] <span class="kwrd">AS</span> [CourseId1], [Extent3].[CourseName] <span class="kwrd">AS</span> [CourseName], 
+        [Extent3].[Location] <span class="kwrd">AS</span> [Location], [Extent3].[TeacherId] <span class="kwrd">AS</span> [TeacherId]
+    <span class="kwrd">FROM</span>  [dbo].[StudentCourse] <span class="kwrd">AS</span> [Extent2]
+    <span class="kwrd">INNER</span> <span class="kwrd">JOIN</span> [dbo].[Course] <span class="kwrd">AS</span> [Extent3] 
+        <span class="kwrd">ON</span> [Extent3].[CourseId] = [Extent2].[CourseId] ) <span class="kwrd">AS</span> [Join1] 
+        <span class="kwrd">ON</span> [Extent1].[StudentID] = [Join1].[StudentId]
+<span class="kwrd">WHERE</span> 1 = [Extent1].[StandardId]
+<span class="kwrd">go</span>
+</pre>
+
+    <p>In this way, you can do a projection of the result, as you want the data to be. </p>
+
+
+                        <div>
+                            <hr />
+                            <a href="https://github.com/entityframeworktutorial/EF6-DBFirst-Demo" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>&nbsp;Download EF 6 DB-First Demo Project from Github</a>
+                        </div>
+                        
+<div class="row">
+    <hr />
+    
+    
+    <div class="col-xl-12 text-center">
+       <div id="124859-19"><script src="//ads.themoneytizer.com/s/gen.js?type=19"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=19"></script></div>
+    </div>
+
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious1_lnkPrev1" class="btn  rounded-0" href="/entityframework6/querying-with-entityframework.aspx"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious1_lnkNext1" class="btn rounded-0" href="/entityframework6/eager-loading-in-entity-framework.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    
+<div class=" d-none d-xl-block col-xl-4 rightSidebar">
+    <div class="row">
+        <div class="col-12">
+            <div class="popular-articles col-12">
+                <ul class="list-group article-items one">
+                    
+                    <li class="list-group-item intro"><a href="https://entityframework-extensions.net/fastest-way-to-insert?z=eft-tl" onclick="_gaq.push(['_trackEvent', 'ef_ext_tl', 'click', 'LINK CLICK', 1, true]);" target="_blank" rel="nofollow  noreferrer" title="Improve EF performance using Entity Framework Extension">Fastest Way to Insert using EF Extensions</a></li>
+                    <li class="list-group-item intro"><a href="https://www.tutorialsteacher.com" target="_blank" title="C#, ASP.NET MVC, LINQ, TypeScript, Node.js, TypeScirpt">Learn C#, MVC, ASP.NET Core, LINQ</a></li>
+
+                </ul>
+            </div>
+
+            
+            <div class="mt-3 ml-2">
+                <div id="124859-2">
+                    <script src="//ads.themoneytizer.com/s/gen.js?type=2"></script>
+                    <script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=2"></script>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div class="mt-3 ml-2" id="stickyAdDiv">
+                <div id="124859-3"><script src="//ads.themoneytizer.com/s/gen.js?type=3"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=3"></script></div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+                </div>
+            </div>
+            
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="/privacy-policy.aspx" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="/cdn-cgi/l/email-protection#25434040414744464e65404b514c515c4357444840524a574e5150514a574c44490b4b4051"><span class="__cf_email__" data-cfemail="67010202030506040c270209130e131e0115060a021008150c13121308150e060b49090213">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/what-is-entityframework.aspx">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="//entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="/aboutme.aspx">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="/privacy-policy.aspx">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="/terms-of-use.aspx">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="//ads.themoneytizer.com/s/gen.js?type=6"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=6"></script></div>
+
+        </section>
+    </div>
+    <script src="/scripts/jquery.min.js"></script>
+    
+    <script src="/scripts/popper.1.12.9.min.js"></script>
+    <script src="/App_Themes/bs/bootstrap.min.js"></script>
+    <script src="/scripts/eftGeneralScript.min.js?v=1.3"></script>
+    <script type="text/javascript" src="//cdn.pubguru.com/fb.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            stickyAd();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+                stickyAd();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            var path = $(location).attr('pathname');
+            $('#leftmenu li a[href="' + path + '"]').addClass('active');
+            $('#topMenu ul li a[href="/entityframework6/introduction.aspx"]').addClass('active');
+
+            maintainLeftMenuPos();
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+</body>
+</html>

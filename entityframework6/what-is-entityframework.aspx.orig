@@ -1,0 +1,743 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	What is Entity Framework?
+</title><link href="../App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="../App_Themes/css/eftstyle.min.css?v=1.9" rel="stylesheet" type="text/css" />
+    
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <meta id="ctl00_head_metaKeyword" name="keywords" content="Entity Framework Tutorial, what is entity framework?"></meta>
+    <meta name="description" content="Entity Framework is an ORM that enables developers to work with relational data as domain-specific objects." /><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.entityframeworktutorial.net/entityframework6/what-is-entityframework.aspx"
+  },
+  "headline": "What is Entity Framework?",
+  "author": {
+    "@type": "Person",
+    "name": "Ravi Karia",
+    "sameAs": [
+      "https://www.entityframeworktutorial.net/aboutme.aspx",
+      "https://www.linkedin.com/in/ravikaria"
+    ]
+  },
+  "dateModified": "2023-11-07T10:17:18.2927970Z",
+  "description": "Entity Framework is an ORM that enables developers to work with relational data as domain-specific objects."
+}
+</script>
+    <link rel="canonical" href="https://www.entityframeworktutorial.net/entityframework6/what-is-entityframework.aspx" />
+
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-33844821-1');
+    </script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="https://www.entityframeworktutorial.net">
+            <img src="../images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="/what-is-entityframework.aspx">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/code-first/what-is-code-first.aspx">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/faq.aspx">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-cheat-sheet.aspx">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="/entity-framework-cheat-sheet.aspx">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <nav class="navbar menuLeft p-0 navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbarLeft">
+                <div class="menuVerticalParent">
+                    <ul class="menuVertical" id="leftmenu">
+                        <li><a href="/entityframework6/what-is-entityframework.aspx">What is Entity Framework?</a></li>
+                        <li><a href="/entityframework6/entityframework-architecture.aspx">EF Architecture</a></li>
+                        <li><a href="/entityframework6/how-entity-framework-works.aspx">How EF Works?</a></li>
+                        <li><a href="/entityframework6/entity-in-entityframework.aspx">Entities</a></li>
+                        <li><a href="/entityframework6/context-class-in-entity-framework.aspx">Context Class</a></li>
+                       
+                        <li><a href="/entityframework6/choosing-development-approach-with-entity-framework.aspx">Development Approaches</a></li>
+
+                        <li><a href="/entityframework6/persistence-in-entity-framework.aspx">Persistence Scenarios</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="middleContent" id="middleContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pr-md-0 col-lg-12 col-xl-8">
+                        
+<div class="lb-ad mt-1">
+    
+    <a href="https://entityframework-extensions.net?z=eft" target="_blank" rel="nofollow" >
+        <img src="/images/ef-ext-lb.jpg" class="eftext-img" /></a>
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious_lnkPrev1" class="btn  rounded-0" href="https://www.entityframeworktutorial.net">Home</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious_lnkNext1" class="btn rounded-0" href="/entityframework6/entityframework-architecture.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                        
+    <h1>What is Entity Framework?</h1>
+
+    <p>
+        Prior to .NET 3.5, we (developers) often used to write ADO.NET code or Enterprise Data Access Block to save or retrieve application data from the underlying database. 
+        We used to open a connection to the database, create a DataSet to fetch or submit the data to the database, convert data from the DataSet to .NET objects or vice-versa to apply business rules. This was a cumbersome and error prone process. Microsoft has provided a framework called "Entity Framework" to automate all these database related activities for your application.
+    </p>
+
+    <p>
+        Entity Framework is an open-source <a href="https://en.wikipedia.org/wiki/Object-relational_mapping" target="_blank" title="Object-relational Mapping">ORM framework</a> for .NET applications supported by Microsoft. 
+        It enables developers to work with data using objects of domain specific classes without focusing on the underlying database tables and columns where this data is stored. With the Entity Framework, developers can work at a higher level of abstraction when they deal with data, and can create and maintain data-oriented applications with less code compared with traditional applications.
+    </p>
+
+    <p>
+        Official Definition: â€œEntity Framework is an object-relational mapper (O/RM) that enables .NET developers to work with a database using .NET objects. It eliminates the need for most of the data-access code that developers usually need to write.â€
+    </p>
+
+    <p>
+        The following figure illustrates where the Entity Framework fits into your application.
+    </p>
+
+    <figure class="thumbnail center-block">
+        <a href="/images/basics/ef-in-app-architecture.png" target="_blank">
+            <img alt="" src="/images/basics/ef-in-app-architecture.png" /></a>
+    </figure>
+    <p>
+        As per the above figure, Entity Framework fits between the business entities (domain classes) and the database. It saves data stored in the properties of business entities and also retrieves data from the database and converts it to business entities objects automatically.
+    </p>
+
+    <p>
+    </p>
+
+    <h2>Entity Framework Features</h2>
+
+    <ul class='list'>
+        <li><b>Cross-platform:</b> EF Core is a cross-platform framework which can run on Windows, Linux and Mac.
+        </li>
+        <li><b>Modelling:</b> EF (Entity Framework) creates an EDM (Entity Data Model) based on POCO (Plain Old CLR Object) entities with get/set properties of different data types. It uses this model when querying or saving entity data to the underlying database.
+        </li>
+        <li><b>Querying:</b> EF allows us to use LINQ queries (C#/VB.NET) to retrieve data from the underlying database. The database provider will translate this LINQ queries to the database-specific query language (e.g. SQL for a relational database). EF also allows us to execute raw SQL queries directly to the database.
+        </li>
+        <li><b>Change Tracking:</b> EF keeps track of changes occurred to instances of your entities (Property values) which need to be submitted to the database. 
+        </li>
+        <li><b>Saving:</b> EF executes INSERT, UPDATE, and DELETE commands to the database based on the changes occurred to your entities when you call the <code>SaveChanges()</code> method. EF also provides the asynchronous <code>SaveChangesAsync()</code> method.
+        </li>
+        <li><b>Concurrency:</b> EF uses Optimistic Concurrency by default to protect overwriting changes made by another user since data was fetched from the database.
+        </li>
+        <li><b>Transactions:</b> EF performs automatic transaction management while querying or saving data. It also provides options to customize transaction management. 
+        </li>
+        <li><b>Caching:</b> EF includes first level of caching out of the box. So, repeated querying will return data from the cache instead of hitting the database. 
+        </li>
+        <li><b>Built-in Conventions:</b> EF follows conventions over the configuration programming pattern, and includes a set of default rules which automatically configure the EF model.  
+        </li>
+        <li><b>Configurations:</b> EF allows us to configure the EF model by using data annotation attributes or Fluent API to override default conventions.  
+        </li>
+        <li><b>Migrations:</b> EF provides a set of migration commands that can be executed on the NuGet Package Manager Console or the Command Line Interface to create or manage underlying database Schema. 
+        </li>
+    </ul>
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+    <h2>Entity Framework Latest Versions</h2>
+
+    <p>
+        Microsoft introduced Entity Framework in 2008 with .NET Framework 3.5. Since then, it released many versions of Entity Framework. Currently, there are two latest versions of Entity Framework: EF 6 and EF Core. 
+        The following table lists important difference between EF 6 and EF Core.
+    </p>
+
+    <figure class="thumbnail center-block">
+        <a href="/images/basics/ef6-vs-efcore.png" target="_blank">
+            <img alt="" src="/images/basics/ef6-vs-efcore.png" /></a>
+    </figure>
+    <h3>EF 6 Version History</h3>
+     <div class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th class="col-xs-4">EF Version
+                    </th>
+                    <th class="col-xs-4">Release Year
+                    </th>
+                    <th class="col-xs-4">.NET Framework
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>EF 6
+                    </td>
+                    <td>2013
+                    </td>
+                    <td>.NET 4.0 & .NET 4.5, VS 2012</td>
+                </tr>
+                <tr>
+                    <td>EF 5
+                    </td>
+                    <td>2012
+                    </td>
+                    <td>.NET 4.0, VS 2012</td>
+                </tr>
+                <tr>
+                    <td>EF 4.3
+                    </td>
+                    <td>2011
+                    </td>
+                    <td>.NET 4.0, VS 2012</td>
+                </tr>
+                <tr>
+                    <td>EF 4.0
+                    </td>
+                    <td>2010
+                    </td>
+                    <td>.NET 4.0, VS 2010</td>
+                </tr>
+                <tr>
+                    <td>EF 1.0 (or 3.5)
+                    </td>
+                    <td>2008
+                    </td>
+                    <td>.NET 3.5 SP1,
+                        VS 2008
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p>Learn more about EF 6 versions history and its features <a href="https://msdn.microsoft.com/en-us/data/jj574253.aspx" target="_blank">here</a>.</p>
+    <h3>EF Core Version History</h3>
+     <div class="table-responsive">
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>EF Core Version
+                </th>
+                <th>Release Date
+                </th>
+                <th>Target Framework
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>EF Core 7.0
+                </td>
+                <td>Nov 2022
+                </td>
+                <td>.NET 6</td>
+            </tr>
+            <tr>
+                <td>EF Core 6.0
+                </td>
+                <td>Nov 2021 
+                </td>
+                <td>.NET 6</td>
+            </tr>
+            <tr>
+                <td>EF Core 5.0
+                </td>
+                <td>Nov 2020
+                </td>
+                <td>.NET Standard 2.1</td>
+            </tr>
+            <tr>
+                <td>EF Core 3.0
+                </td>
+                <td>Sept 2019
+                </td>
+                <td>.NET Standard 2.1</td>
+            </tr>
+            <tr>
+                <td>EF Core 2.0
+                </td>
+                <td>August 2017
+                </td>
+                <td>.NET Standard 2.0</td>
+            </tr>
+            <tr>
+                <td>EF Core 1.0
+                </td>
+                <td>June 2016
+                </td>
+                <td>.NET Standard 2.1</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <p>Learn about the basic workflow while working with Entity Framework in the next chapter.</p>
+
+                        
+<div class="row">
+    <hr />
+    
+    
+    <div class="col-xl-12 text-center">
+       <div id="124859-19"><script src="//ads.themoneytizer.com/s/gen.js?type=19"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=19"></script></div>
+    </div>
+
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious1_lnkPrev1" class="btn  rounded-0" href="https://www.entityframeworktutorial.net">Home</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious1_lnkNext1" class="btn rounded-0" href="/entityframework6/entityframework-architecture.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                    </div>
+                    
+<div class=" d-none d-xl-block col-xl-4 rightSidebar">
+    <div class="row">
+        <div class="col-12">
+            <div class="popular-articles col-12">
+                <ul class="list-group article-items one">
+                    
+                    <li class="list-group-item intro"><a href="https://entityframework-extensions.net/fastest-way-to-insert?z=eft-tl" onclick="_gaq.push(['_trackEvent', 'ef_ext_tl', 'click', 'LINK CLICK', 1, true]);" target="_blank" rel="nofollow  noreferrer" title="Improve EF performance using Entity Framework Extension">Fastest Way to Insert using EF Extensions</a></li>
+                    <li class="list-group-item intro"><a href="https://www.tutorialsteacher.com" target="_blank" title="C#, ASP.NET MVC, LINQ, TypeScript, Node.js, TypeScirpt">Learn C#, MVC, ASP.NET Core, LINQ</a></li>
+                    
+                </ul>
+            </div>
+
+            
+            <div class="mt-3 ml-2">
+                <div id="124859-2">
+                    <script src="//ads.themoneytizer.com/s/gen.js?type=2"></script>
+                    <script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=2"></script>
+                </div>
+                
+                
+                
+                
+                
+            </div>
+
+                <div class="mt-3 ml-2" id="stickyAdDiv">
+                    <div id="124859-3">
+                        <script src="//ads.themoneytizer.com/s/gen.js?type=3"></script>
+                        <script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=3"></script>
+                    </div>
+                </div>
+
+
+        </div>
+    </div>
+
+                </div>
+            </div>
+            
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="/privacy-policy.aspx" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="/cdn-cgi/l/email-protection#22444747464043414962474c564b565b4450434f47554d50495657564d504b434e0c4c4756"><span class="__cf_email__" data-cfemail="45232020212724262e05202b312c313c2337242820322a372e3130312a372c24296b2b2031">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/what-is-entityframework.aspx">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="//entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="/aboutme.aspx">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="/privacy-policy.aspx">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="/terms-of-use.aspx">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="//ads.themoneytizer.com/s/gen.js?type=6"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=6"></script></div>
+
+        </section>
+    </div>
+    <script src="/scripts/jquery.min.js"></script>
+    
+    <script src="/scripts/popper.1.12.9.min.js"></script>
+    <script src="/App_Themes/bs/bootstrap.min.js"></script>
+    <script src="/scripts/eftGeneralScript.min.js?v=1.3"></script>
+    <script type="text/javascript" src="//cdn.pubguru.com/fb.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            stickyAd();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+                stickyAd();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            var path = $(location).attr('pathname');
+            $('#leftmenu li a[href="' + path + '"]').addClass('active');
+            $('#topMenu ul li a[href="/what-is-entityframework.aspx"]').addClass('active');
+
+            maintainLeftMenuPos();
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+
+
+
+<!DOCTYPE html>
+
+<html>
+<head><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=EDGE;chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Shadow Property in Entity Framework Core
+</title><link href="../App_Themes/bs/bootstrap.min.css" rel="stylesheet" /><link href="../App_Themes/css/eftstyle.min.css?v=1.9" rel="stylesheet" type="text/css" />
+    
+
+    <!--[if lt IE 9]>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <meta id="ctl00_head_metaKeyword" name="keywords" content="shadow property, shadow property in efcore,ef tracking, entity tracking,change entity state, entitystate,how to, entity framework,Entity Framework core tutorial,efcore Tutorial,ef, ef core, entity framework"></meta>
+    <meta name="description" content="Learn what is shadow property and what is the practical use of it in Entity Framework Core." />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.entityframeworktutorial.net/efcore/shadow-property.aspx"},"headline":"Shadow Property in Entity Framework Core","author":{"@type":"Person","name":"Ravi Karia","sameAs":["https://www.entityframeworktutorial.net/aboutme.aspx","https://www.linkedin.com/in/ravikaria"]},"dateModified":"2021-06-26T15:27:49.3379771Z","description":"Learn what is shadow property and what is the practical use of it in Entity Framework Core."}</script>
+    <link rel="canonical" href="https://www.entityframeworktutorial.net/efcore/shadow-property.aspx" />
+
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33844821-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-33844821-1');
+    </script>
+    <!-- InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+<script type="text/javascript" async=true>
+    (function () {
+        var host = "www.themoneytizer.com";
+        var element = document.createElement('script');
+        var firstScript = document.getElementsByTagName('script')[0];
+        var url = 'https://cmp.inmobi.com'
+            .concat('/choice/', '6Fv0cGNfc_bw8', '/', host, '/choice.js?tag_version=V3');
+        var uspTries = 0;
+        var uspTriesLimit = 3;
+        element.async = true;
+        element.type = 'text/javascript';
+        element.src = url;
+
+        firstScript.parentNode.insertBefore(element, firstScript);
+
+        function makeStub() {
+            var TCF_LOCATOR_NAME = '__tcfapiLocator';
+            var queue = [];
+            var win = window;
+            var cmpFrame;
+
+            function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                    if (doc.body) {
+                        var iframe = doc.createElement('iframe');
+
+                        iframe.style.cssText = 'display:none';
+                        iframe.name = TCF_LOCATOR_NAME;
+                        doc.body.appendChild(iframe);
+                    } else {
+                        setTimeout(addFrame, 5);
+                    }
+                }
+                return !otherCMP;
+            }
+
+            function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                    return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                    if (
+                        args.length > 3 &&
+                        args[2] === 2 &&
+                        typeof args[3] === 'boolean'
+                    ) {
+                        gdprApplies = args[3];
+                        if (typeof args[2] === 'function') {
+                            args[2]('set', true);
+                        }
+                    }
+                } else if (args[0] === 'ping') {
+                    var retr = {
+                        gdprApplies: gdprApplies,
+                        cmpLoaded: false,
+                        cmpStatus: 'stub'
+                    };
+
+                    if (typeof args[2] === 'function') {
+                        args[2](retr);
+                    }
+                } else {
+                    if (args[0] === 'init' && typeof args[3] === 'object') {
+                        args[3] = Object.assign(args[3], { tag_version: 'V3' });
+                    }
+                    queue.push(args);
+                }
+            }
+
+            function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                    if (msgIsString) {
+                        json = JSON.parse(event.data);
+                    } else {
+                        json = event.data;
+                    }
+                } catch (ignore) { }
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                    window.__tcfapi(
+                        payload.command,
+                        payload.version,
+                        function (retValue, success) {
+                            var returnMsg = {
+                                __tcfapiReturn: {
+                                    returnValue: retValue,
+                                    success: success,
+                                    callId: payload.callId
+                                }
+                            };
+                            if (msgIsString) {
+                                returnMsg = JSON.stringify(returnMsg);
+                            }
+                            if (event && event.source && event.source.postMessage) {
+                                event.source.postMessage(returnMsg, '*');
+                            }
+                        },
+                        payload.parameter
+                    );
+                }
+            }
+
+            while (win) {
+                try {
+                    if (win.frames[TCF_LOCATOR_NAME]) {
+                        cmpFrame = win;
+                        break;
+                    }
+                } catch (ignore) { }
+
+                if (win === window.top) {
+                    break;
+                }
+                win = win.parent;
+            }
+            if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+            }
+        };
+
+        makeStub();
+
+        var uspStubFunction = function () {
+            var arg = arguments;
+            if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function () {
+                    if (typeof window.__uspapi !== 'undefined') {
+                        window.__uspapi.apply(window.__uspapi, arg);
+                    }
+                }, 500);
+            }
+        };
+
+        var checkIfUspIsReady = function () {
+            uspTries++;
+            if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+            } else {
+                clearInterval(uspInterval);
+            }
+        };
+
+        if (typeof window.__uspapi === 'undefined') {
+            window.__uspapi = uspStubFunction;
+            var uspInterval = setInterval(checkIfUspIsReady, 6000);
+        }
+    })();
+</script>
+<!-- End InMobi Choice. Consent Manager Tag v3.0 (for TCF 2.2) -->
+</head>
+<body>
+
+    <div class="phWrapper">
+        
+
+<header class="phHeader">
+    <nav class="navbar navbar-expand logo-link">
+        <a class="navbar-brand text-uppercase" href="http://www.entityframeworktutorial.net">
+            <img src="../images/logo.png" class="logo-img" alt="Entity Framework Tutorial" /></a>
+    </nav>
+</header>
+
+        
+        <nav class="navbar navbar-expand navbar-dark special-color-dark topMenuHorizontal sticky-top">
+
+            <!-- Navbar brand -->
+            <!-- Collapse button -->
+            <button class="navbar-toggler d-block d-md-none" type="button" data-toggle="collapse" data-target="#navbarLeft" aria-controls="#navbarLeft"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div class="collapse navbar-collapse" id="topMenu">
+
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto left">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link" style="font-size: 20px">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="/what-is-entityframework.aspx">EF Basics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/code-first/what-is-code-first.aspx">EF 6 Code-First </a></li>
+                    <li class="nav-item"><a class="nav-link" href="/faq.aspx">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/entity-framework-cheat-sheet.aspx">Cheat Sheet</a></li>
+                    <li class="nav-item dropdown mega-dropdown d-lg-none d-md-block">
+                <a class="nav-link dropdown-toggle no-caret" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More</a>
+                <div class="dropdown-menu mega-menu v-2 row z-depth-1 special-color" aria-labelledby="navbarDropdownMenuLink1">
+                    <a class="close text-white">&#10005; </a>
+                    <div class="row mx-md-4 mx-1">
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4 mt-4 mb-4">
+                            <h6 class="sub-title text-white">Entity Framework Tutorials</h6>
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                <li class=""><a class="menu-item" href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                <li class=""><a class="menu-item" href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xl-3 sub-menu my-xl-4  mt-4 ">
+                            <h6 class="sub-title text-white">Entity Framework</h6>
+                            <!--Featured image-->
+                            <ul class="caret-style pl-0">
+                                <li class=""><a class="menu-item" href="/entity-framework-quiz.aspx">EF Quiz</a></li>
+                                <li class=""><a class="menu-item" href="/Articles/entityframework-articles.aspx">FAQs</a></li>
+                                
+                                <li class=""><a class="menu-item" href="/entity-framework-cheat-sheet.aspx">EF Cheat Sheet</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+                </ul>
+
+                <!-- Links -->
+                <ul class="navbar-nav nav-flex right ml-auto">
+                    
+                </ul>
+                <!-- Search form -->
+                <div id="wrap">
+                    <form class="navbar-form" action="https://www.google.com/search" id="cse-search-box" role="search" target="_blank">
+                        <div>
+                            <input type="hidden" name="cx" value="partner-pub-7448309248176309:8374077199" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="text" name="q" id="q" placeholder="Search" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="submit" id="search_submit" class="button-search border-0 bg-transparent text-white">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </nav>
+
+        
+        <nav class="navbar menuLeft p-0 navbar-expand-md">
+            <div class="collapse navbar-collapse" id="navbarLeft">
+                <div class="menuVerticalParent">
+                    <ul class="menuVertical" id="leftmenu">
+                        <li><a href="/efcore/entity-framework-core.aspx">EF Core - Introduction</a></li>
+                        <li><a href="/efcore/install-entity-framework-core.aspx">EF Core - Installation</a></li>
+                        <li><a href="/efcore/create-entities.aspx">EF Core - Create Entities</a></li>
+                        <li><a href="/efcore/entity-framework-core-dbcontext.aspx">EF Core - Create DbContext</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/working-with-dbcontext.aspx">Working with DbContext</a></li>
+                                <li><a href="/efcore/changetracker-in-ef-core.aspx">Track Changes of Entities</a></li>
+                                <li><a href="/efcore/db-connection-strings.aspx">DB Connection Strings</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/efcore/entity-framework-core-migration.aspx">EF Core - Migrations</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/generate-sql-script.aspx">Generate SQL Script</a></li>
+                                <li><a href="/efcore/pmc-commands-for-ef-core-migration.aspx">PMC/PowerShell Commands</a></li>
+                                <li><a href="/efcore/cli-commands-for-ef-core-migration.aspx">.NET Core CLI Commands</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/efcore/saving-data-in-connected-scenario-in-ef-core.aspx">EF Core - Saving Data</a></li>
+                        <li><a href="/efcore/querying-in-ef-core.aspx">EF Core - Querying</a></li>
+                        <li><a href="/efcore/saving-data-in-disconnected-scenario-in-ef-core.aspx">Disconnected Scenario: Insert Data</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/update-data-in-entity-framework-core.aspx">Update Data</a></li>
+                                <li><a href="/efcore/delete-data-in-entity-framework-core.aspx">Delete Data</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li><a href="/efcore/conventions-in-ef-core.aspx">EF Core - Conventions</a></li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/one-to-many-conventions-entity-framework-core.aspx">One-to-Many Conventions</a></li>
+                                <li><a href="/efcore/one-to-one-conventions-entity-framework-core.aspx">One-to-One Conventions</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/efcore/configuration-in-entity-framework-core.aspx">EF Core - Configurations</a></li>
+                        <li><a href="/efcore/fluent-api-in-entity-framework-core.aspx">EF Core - Fluent API</a>
+
+                        </li>
+                        <li>
+                            <ul>
+                                <li><a href="/efcore/configure-one-to-many-relationship-using-fluent-api-in-ef-core.aspx">Configure One-to-Many Relationship</a></li>
+                                <li><a href="/efcore/configure-one-to-one-relationship-using-fluent-api-in-ef-core.aspx">Configure One-to-One Relationship</a></li>
+                                <li><a href="/efcore/configure-many-to-many-relationship-in-ef-core.aspx">Configure Many-to-Many Relationship</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li><a href="/efcore/shadow-property.aspx">Shadow Property</a></li>
+                        <li><a href="/efcore/working-with-disconnected-entity-graph-ef-core.aspx">Working with Disconnected Entity Graph</a></li>
+                        <li><a href="/efcore/changetracker-trackgraph-ef-core.aspx">Tracking Entity Graph</a></li>
+                        <li><a href="/efcore/raw-sql-queries-in-ef-core.aspx">Raw SQL Queries</a></li>
+                        <li><a href="/efcore/working-with-stored-procedure-in-ef-core.aspx">Working with Stored Procedure</a></li>
+                        <li><a href="/efcore/logging-in-entityframework-core.aspx">Logging</a></li>
+
+                        <li><a href="/efcore/create-model-for-existing-database-in-ef-core.aspx">EF Core - Existing Database</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="middleContent" id="middleContent">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 pr-md-0 col-lg-12 col-xl-8">
+                        
+<div class="lb-ad mt-1">
+    
+    <a href="https://entityframework-extensions.net?z=eft" target="_blank" rel="nofollow" >
+        <img src="/images/ef-ext-lb.jpg" class="eftext-img" /></a>
+</div>
+
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious_lnkPrev1" class="btn  rounded-0" href="/efcore/configure-many-to-many-relationship-in-ef-core.aspx"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious_lnkNext1" class="btn rounded-0" href="/efcore/working-with-disconnected-entity-graph-ef-core.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+
+                        
+    <h1>Shadow Property in Entity Framework Core</h1>
+
+    <p>
+        Entity Framework Core introduced a new type of property called "Shadow" property which was not exist in EF 6.x.
+    </p>
+
+    <p>
+        Shadow properties are the properties that are not defined in your .NET entity class directly; instead, you configure it for the particular entity type in the entity data model. They can be configured in the OnModelCreating() method of the context class.
+    </p>
+
+    <p>
+        The following figure illustrates the shadow property.
+    </p>
+
+    <figure class="thumbnail center-block">
+        <a href="/Images/efcore/shadow-property.png" target="_blank">
+            <img alt="" src="/Images/efcore/shadow-property.png" /></a>
+    </figure>
+    <p>
+        As you can see in the above figure, shadow properties are not part of your entity class. 
+        So, you cannot access it as you access other properties of an entity. Shadow properties can only be configured for an entity type while building an Entity Data Model and they are also mapped to a database column. 
+        The value and state of the shadow properties are maintained purely in the Change Tracker.
+    </p>
+
+    <p>
+        Let's understand the practical aspect of the shadow property. Assume that we need to maintain the created and updated date of each record in the database table. 
+        You learned <a href="/faq/set-created-and-modified-date-in-efcore.aspx" target="_blank">how to set created and modified date of entities in EF Core</a> by defining <code>CreatedDate</code> and <code>UpdatedDate</code> properties in entity classes. 
+        Here, we will see how to achieve the same result by using shadow properties without including them in entity classes.
+    </p>
+
+    <p>
+        Consider the following <code>Student</code> entity class.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">public</span> <span class="kwrd">class</span> Student
+{
+    <span class="kwrd">public</span> <span class="kwrd">int</span> StudentID { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">string</span> StudentName { get; set; }
+    <span class="kwrd">public</span> DateTime? DateOfBirth { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">decimal</span> Height { get; set; }
+    <span class="kwrd">public</span> <span class="kwrd">float</span> Weight { get; set; }
+}
+</pre>
+    <p>
+        The above <code>Student</code> class does not include <code>CreatedDate</code> and <code>UpdatedDate</code> properties to maintain created or updated time. 
+        We will configure them as shadow properties on the <code>Student</code> entity.
+    </p>
+
+    <h2>Defining Shadow Property</h2>
+
+    <p>
+        You can define the shadow properties for an entity type using the Fluent API in the <code>OnModelCreating()</code> using the <code>Property()</code> method.
+    </p>
+
+    <p>
+        The following configure two shadow properties <code>CreatedDate</code> and <code>UpdatedDate</code> on the <code>Student</code> entity.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">public</span> <span class="kwrd">class</span> SchoolContext : DbContext
+{
+    <span class="kwrd">public</span> SchoolContext() : <span class="kwrd">base</span>()
+    {
+
+    }
+    
+    <span class="kwrd">protected</span> <span class="kwrd">override</span> <span class="kwrd">void</span> OnModelCreating(ModelBuilder modelBuilder) {
+        modelBuilder.Entity&lt;Student&gt;().Property&lt;DateTime&gt;(<span class="str">"CreatedDate"</span>);
+        modelBuilder.Entity&lt;Student&gt;().Property&lt;DateTime&gt;(<span class="str">"UpdatedDate"</span>);
+    }
+
+    <span class="kwrd">public</span> DbSet&lt;Student&gt; Students { get; set; }
+}
+</pre>
+    <p>
+        As you can see, the <code>Property()</code> method is used to configure a shadow property. Specify the name of the shadow property as a string and the type as a generic parameter. If the name specified in the <code>Property()</code> method matches the name of an existing property, then the EF Core will configure that existing property as a shadow property rather than introducing a new shadow property.
+    </p>
+
+    <h2>Shadow Properties in the Database </h2>
+
+    <p>
+        Once we define shadow properties, we need to update the database schema because shadow properties will be mapped to the corresponding database column.
+    </p>
+
+    <p>
+        To do this, add database migration using the following command in Package Manager Console in Visual Studio.
+    </p>
+
+    <samp>
+        PM> add-migration &lt;migration-name&gt;<br />
+        PM> update-database
+    </samp>
+
+    <p>
+        Now, the <code>Student</code> table will include two columns, <code>CreatedDate</code> and <code>UpdatedDate</code> in SQL Server, as shown below.
+    </p>
+
+    <figure class="thumbnail center-block">
+        <a href="/Images/efcore/shadow-property-in-db.png" target="_blank">
+            <img alt="" src="/Images/efcore/shadow-property-in-db.png" /></a>
+    </figure>
+    <p>
+        Thus, the database will have corresponding columns even if we haven't included these properties in the <code>Student</code> class and configured them as shadow properties.
+    </p>
+    
+<div class="inart-ad">
+   
+    
+</div>
+
+    <h2>Access Shadow Property</h2>
+
+    <p>
+        You can get or set the values of the shadow properties using the <code>Property()</code> method of <code>EntityEntry</code>. The following code access the value of the shadow property.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext())
+{
+    <span class="kwrd">var</span> std = <span class="kwrd">new</span> Student(){ StudentName = <span class="str">"Bill"</span>  };
+    
+    <span class="rem">// sets the value to the shadow property</span>
+    context.Entry(std).Property(<span class="str">"CreatedDate"</span>).CurrentValue = DateTime.Now;
+
+    <span class="rem">// gets the value of the shadow property</span>
+    <span class="kwrd">var</span> createdDate = context.Entry(std).Property(<span class="str">"CreatedDate"</span>).CurrentValue; 
+}
+</pre>
+    <p>
+        However, in our scenario, we want to set the value to these shadow properties automatically on the <code>SaveChanges()</code> method, so that we don't have to set them manually on each entity object. So, override the SaveChanges() method in the context class, as shown below.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">public</span> <span class="kwrd">override</span> <span class="kwrd">int</span> SaveChanges()
+{
+    <span class="kwrd">var</span> entries = ChangeTracker
+        .Entries()
+        .Where(e =&gt;
+                e.State == EntityState.Added
+                || e.State == EntityState.Modified);
+
+    <span class="kwrd">foreach</span> (<span class="kwrd">var</span> entityEntry <span class="kwrd">in</span> entries)
+    {
+        entityEntry.Property(<span class="str">"UpdatedDate"</span>).CurrentValue = DateTime.Now;
+
+        <span class="kwrd">if</span> (entityEntry.State == EntityState.Added)
+        {
+            entityEntry.Property(<span class="str">"CreatedDate"</span>).CurrentValue = DateTime.Now;
+        }
+    }
+
+    <span class="kwrd">return</span> <span class="kwrd">base</span>.SaveChanges();
+}
+</pre>
+    <p>
+        This will automatically set values to <code>CreatedDate</code> and <code>UpdatedDate</code> shadow properties.
+    </p>
+    <p>Now, execute the following code and check the record in the database.</p>
+    <pre class="csharpcode">
+<span class="kwrd">using</span> (<span class="kwrd">var</span> context = <span class="kwrd">new</span> SchoolContext())
+{
+    <span class="kwrd">var</span> std = <span class="kwrd">new</span> Student(){ StudentName = <span class="str">"Bill"</span>  };
+    context.Add(std);
+    context.SaveChanges();
+}
+</pre>
+    <p>The above code will insert the following record with <code>CreatedDate</code> and <code>UpdatedDate</code> in the <code>Students</code> table.</p>
+     <figure class="thumbnail center-block">
+        <a href="/Images/efcore/db-record.png" target="_blank">
+            <img alt="" src="/Images/efcore/db-record.png" /></a>
+    </figure>
+    <p>
+        Thus, by configuring shadow properties, we don't have to include them in the entity class.
+    </p>
+
+    <h2>Configuring Shadow Properties on All Entities</h2>
+
+    <p>
+        You can configure shadow properties on all entities at once, rather than configuring them manually for all.
+    </p>
+
+    <p>
+        For example, we can configure <code>CreatedDate</code> and <code>UpdatedDate</code> on all the entities at once, as shown below.
+    </p>
+
+    <pre class="csharpcode">
+<span class="kwrd">protected</span> <span class="kwrd">override</span> <span class="kwrd">void</span> OnModelCreating(ModelBuilder modelBuilder)
+{
+    <span class="kwrd">var</span> allEntities = modelBuilder.Model.GetEntityTypes();
+
+    <span class="kwrd">foreach</span> (<span class="kwrd">var</span> entity <span class="kwrd">in</span> allEntities)
+    {
+        entity.AddProperty(<span class="str">"CreatedDate"</span>,<span class="kwrd">typeof</span>(DateTime));
+        entity.AddProperty(<span class="str">"UpdatedDate"</span>,<span class="kwrd">typeof</span>(DateTime));
+    }
+}
+</pre>
+    <h2>When to use shadow properties?</h2>
+
+    <p>
+        Shadow properties can be used in two scenarios:
+    </p>
+
+    <ol>
+        <li>When you don't want to expose database columns on the mapped entities, such as the scenario discussed above.
+        </li>
+        <li>When you don't want to expose foreign key property and want to manage relationship only using navigation properties. The foreign key property will be shadow property and mapped to the database column but will not be exposed as a property of an entity. (In EF Core, if you don't define foreign key property in entity classes then it will automatically generate shadow property for that. You don't need to configure foreign key property manually.)
+        </li>
+    </ol>
+    <p>Learn <a href="/faq/how-to-check-shadow-property-at-runtime.aspx">how to check shadow properties at runtime</a>.</p>
+
+                        
+<div class="row">
+    <hr />
+    
+    
+    <div class="col-xl-12 text-center">
+       <div id="124859-19"><script src="//ads.themoneytizer.com/s/gen.js?type=19"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=19"></script></div>
+    </div>
+
+</div>
+
+                        
+<div class="navigation ">
+    <div class="row">
+        <div class="col-6  text-left mb-2 mb-sm-0" id="divPrev1">
+            <a id="ctl00_eftNextPrevious1_lnkPrev1" class="btn  rounded-0" href="/efcore/configure-many-to-many-relationship-in-ef-core.aspx"><i class="fa fa-angle-left mr-1"></i> Previous</a>
+        </div>
+        <div class="col-6 text-right float-right" id="divNext1">
+            <a id="ctl00_eftNextPrevious1_lnkNext1" class="btn rounded-0" href="/efcore/working-with-disconnected-entity-graph-ef-core.aspx">Next <i class="fa fa-angle-right ml-1"></i></a>
+        </div>
+    </div>
+</div>
+
+                    </div>
+                    
+                    
+<div class=" d-none d-xl-block col-xl-4 rightSidebar">
+    <div class="row">
+        <div class="col-12">
+            <div class="popular-articles col-12">
+                <ul class="list-group article-items one">
+                    
+                    <li class="list-group-item intro"><a href="https://entityframework-extensions.net/fastest-way-to-insert?z=eft-tl" onclick="_gaq.push(['_trackEvent', 'ef_ext_tl', 'click', 'LINK CLICK', 1, true]);" target="_blank" rel="nofollow  noreferrer" title="Improve EF performance using Entity Framework Extension">Fastest Way to Insert using EF Extensions</a></li>
+                    <li class="list-group-item intro"><a href="https://www.tutorialsteacher.com" target="_blank" title="C#, ASP.NET MVC, LINQ, TypeScript, Node.js, TypeScirpt">Learn C#, MVC, ASP.NET Core, LINQ</a></li>
+
+                </ul>
+            </div>
+
+            
+            <div class="mt-3 ml-2">
+                <div id="124859-2">
+                    <script src="//ads.themoneytizer.com/s/gen.js?type=2"></script>
+                    <script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=2"></script>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div class="mt-3 ml-2" id="stickyAdDiv">
+                <div id="124859-3"><script src="//ads.themoneytizer.com/s/gen.js?type=3"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=3"></script></div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+                </div>
+            </div>
+            
+<footer class="section footer pt-5">
+    <div class="footer-main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-5 ">
+                            <div class="edugate-widget widget">
+                                <div class="title-widget">EntityFrameworkTutorial</div>
+                                <div class="content-widget">
+                                    <p>
+                                        Learn Entity Framework using simple yet practical examples on EntityFrameworkTutorial.net for free.
+                                        Learn Entity Framework DB-First, Code-First and EF Core step by step.
+                                        While using this site, you agree to have read and accepted our terms
+                                        of use and <a href="/privacy-policy.aspx" class="privacypolicy">privacy policy</a>.
+                                    </p>
+                                    <div class="info-list">
+                                        <ul class="list-unstyled">
+                                            <li><i class="fa fa-envelope-o"></i><a class="mail" href="/cdn-cgi/l/email-protection#385e5d5d5c5a595b53785d564c514c415e4a59555d4f574a534c4d4c574a51595416565d4c"><span class="__cf_email__" data-cfemail="64020101000605070f24010a100d101d0216050901130b160f1011100b160d05084a0a0110">[email&#160;protected]</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="useful-link-widget widget">
+                                <div class="title-widget">Tutorials</div>
+                                <div class="content-widget">
+                                    <div class="useful-link-list">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/what-is-entityframework.aspx">EF Basics</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/efcore/entity-framework-core.aspx">EF Core</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 ">
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-angle-right"></i><a href="/entityframework6/introduction.aspx">EF 6 DB-First</a></li>
+                                                    <li><i class="fa fa-angle-right"></i><a href="/code-first/what-is-code-first.aspx">EF 6 Code-First</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="mailing-widget widget">
+                                <div class="title-widget">E-mail list</div>
+                                <div class="content-wiget">
+                                    <p>
+                                        Subscribe to EntityFrameworkTutorial email list and get EF 6 and EF Core Cheat Sheets, latest updates, tips &amp;
+                                        tricks about Entity Framework to your inbox.
+                                    </p>
+                                    <form action="//entityframeworktutorial.us13.list-manage.com/subscribe/post-json?u=659e2cbd2829799e7dc94ae35&amp;id=93dae2ea03" method="post" id="subscribe-form" name="subscribe-form" class="validate" novalidate>
+                                        <div class="input-group">
+                                            <input type="text" placeholder="Email address" class="form-control form-email-widget" name="MERGE0" id="MERGE0" size="25" /><span class="input-group-btn"><input type="submit" value="Go" name="subscribe" id="mc-embedded-subscribe" class="btn btn-email" /></span>
+                                        </div>
+
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display: none"></div>
+                                            <div class="response" id="mce-success-response" style="display: none"></div>
+                                        </div>
+                                        <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                                        <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                                            <input type="text" name="b_659e2cbd2829799e7dc94ae35_93dae2ea03" tabindex="-1" value="" />
+                                        </div>
+                                        <div class="alert-success" id="successMsg"></div>
+                                        <div class="alert-danger" id="failMsg"></div>
+
+                                    </form>
+                                    <p>We respect your privacy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row hyperlink text-center text-md-left">
+                <div class="col-md-6 hyper-left">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="/aboutme.aspx">ABOUT ME</a></li>
+                        <li class="list-inline-item"><a href="/privacy-policy.aspx">PRIVACY POLICY</a></li>
+                        <li class="list-inline-item"><a href="/terms-of-use.aspx">TERMS OF USE</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 hyper-right text-center text-md-right">
+                    <i class="fa fa-copyright" aria-hidden="true"></i> 2023 EntityFrameworkTutorial.net. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</footer>
+   <div id="124859-6"><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="//ads.themoneytizer.com/s/gen.js?type=6"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=124859&formatId=6"></script></div>
+
+        </section>
+    </div>
+    <script src="/scripts/jquery.min.js"></script>
+    
+    <script src="/scripts/popper.1.12.9.min.js"></script>
+    <script src="/App_Themes/bs/bootstrap.min.js"></script>
+    <script src="/scripts/eftGeneralScript.min.js?v=1.3"></script>
+    <script type="text/javascript" src="//cdn.pubguru.com/fb.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            stickTLMenus();
+            stickyAd();
+            var temp = $(window).height();
+
+            $('#back-top a').addClass('d-none');
+            $(window).scroll(function () {
+                stickTLMenus();
+                stickyAd();
+
+                if ($(window).scrollTop() > temp) {
+                    $('#back-top a').addClass('d-block');
+                    $('#back-top a').removeClass('d-none');
+                }
+                else {
+                    $('#back-top a').addClass('d-none');
+                    $('#back-top a').removeClass('d-block');
+                }
+            });
+            var path = $(location).attr('pathname');
+            $('#leftmenu li a[href="' + path + '"]').addClass('active');
+            $('#topMenu ul li a[href="/efcore/entity-framework-core.aspx"]').addClass('active');
+
+            maintainLeftMenuPos();
+            $("#subscribe-form").on("submit", function (s) { s.preventDefault(), submitSubscribeForm($("#subscribe-form")) })
+        });
+    </script>
+</body>
+</html>

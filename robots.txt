@@ -1,0 +1,9 @@
+User-agent: Mediapartners-Google 
+Disallow: /bin/
+Disallow: /obj/
+Disallow: /Downloads/
+Disallow: /cdn-cgi/
+Disallow: /detroitchicago/
+Disallow: /porpoiseant/
+Disallow: /beardeddragon/
+Disallow: /tardisrocinante/
